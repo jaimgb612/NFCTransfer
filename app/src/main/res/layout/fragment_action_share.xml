@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.nfctransfer.fragments.ActionShareFragment">
+
+    <View
+        android:background="@drawable/background_repeat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/fragment_me_main_button"
+        android:layout_gravity="center"
+        android:layout_width="200dip"
+        android:layout_height="200dip"
+        android:src="@drawable/button_share_en"
+        app:cb_pressedRingWidth="8dip" />
+
+</FrameLayout>
