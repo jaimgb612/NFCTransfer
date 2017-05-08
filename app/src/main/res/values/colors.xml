@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
-    <color name="yoki_primary_color">#2ABB9B</color>
-    <color name="yoki_action_bar_color">#2ABB9B</color>
-    <color name="yoki_second_color">#16A085</color>
-    <color name="primary_dark">#142E3C</color>
-    <color name="login_connect_button_lock">#33000000</color>
-    <color name="login_connect_button_unlock">#2ABB9B</color>
-    <color name="accent">#ff2abb9b</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black_20">#33000000</color>
-    <color name="black">#101010</color>
     <color name="transparent">#00000000</color>
     <color name="primary">#3C515C</color>
-    <color name="ripple">#F06292</color>
-    <color name="accent_pressed">#C2185B</color>
-    <color name="primary_pressed">#ff0026c2</color>
-    <color name="second_subtext">#ff6e6e6e</color>
-    <color name="register_texts_background">#9b6e6e6e</color>
-    <color name="progress_layout_background">#626e6e6e</color>
-    <color name="me_top_layout_background">#dc3c515c</color>
-    <color name="profile_showcase_banner">#ab3c515c</color>
-    <color name="user_login_background">#c83f3f3f</color>
-    <color name="user_login_text">#dbe1e1e1</color>
-    <color name="ksw_md_ripple_normal">#1E000000</color>
-    <color name="ksw_md_ripple_checked">#33019285</color>
-    <color name="ksw_md_solid_shadow">#33000000</color>
-    <color name="ksw_md_solid_normal">#ECECEC</color>
-    <color name="ksw_md_solid_checked">#019285</color>
-    <color name="ksw_md_solid_disable">#FFFFFF</color>
-    <color name="ksw_md_solid_checked_disable">#aaaaaa</color>
-    <color name="listview_foreground">#efefef</color>
+
+    <color name="view_pager_selected_tab_color">#ff1400</color>
+
+    <!--
+    <color name="icon_enabled">#414141</color>
+    <color name="icon_disabled">#8e8e8e</color>
+    -->
+
+    <color name="icon_enabled">#414141</color>
+    <color name="icon_disabled">#00000000</color>
+
+    <color name="text_enabled">#FFFFFFFF</color>
+    <color name="text_disabled">#8e8e8e</color>
+
+    <color name="row_blur">#6d878787</color>
+    <color name="row_neutral">#00FFFFFF</color>
+
+    <color name="login_background_color">#2980b9</color>
+    <color name="login_background_secondary_color">#3498db</color>
+
+    <color name="edittext_hint_color">#92dedede</color>
+
+    <color name="login_text_color_hint">#878787</color>
 
 </resources>
 

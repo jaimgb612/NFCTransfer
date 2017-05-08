@@ -1,6 +1,256 @@
 <resources>
-    <string name="app_name">NFCTransfer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- ********************************** -->
+    <!--                Base                -->
+    <!-- ********************************** -->
+
+    <string name="app_name">NFCTransfer</string>
+    <string name="action_settings">Preferences</string>
+    <string name="about_us">About</string>
+    <string name="yokiTabName">Yoki</string>
+    <string name="meTabName">Me</string>
+    <string name="sharedTabName">Shared</string>
+
+    <string name="prefs_file_name">yoki_preferences</string>
+    <string name="alert_dialog_ok_button">Ok</string>
+
+
+    <!-- ********************************** -->
+    <!--                Menus               -->
+    <!-- ********************************** -->
+
+    <string name="profile_row_menu_title">Choose an option</string>
+    <string name="menu_edit">Modify</string>
+    <string name="menu_sync">Synchronize again</string>
+    <string name="menu_remove">Delete</string>
+
+    <!-- ********************************** -->
+    <!--                Login               -->
+    <!-- ********************************** -->
+
+    <string name="user_login_login_hint">E-mail address</string>
+    <string name="user_login_password_hint">Password</string>
+    <!-- Strings related to login -->
+    <string name="login_button_connection">Connexion</string>
+    <string name="login_button_register">S\'enregistrer</string>
+    <string name="login_button_cancel">Annuler</string>
+    <string name="login_spinner_years_suffix">ans</string>
+    <string name="login_form_firstname">Prénom</string>
+    <string name="login_form_lastname">Nom</string>
+    <string name="login_form_age">Nom</string>
+    <string name="login_form_password">Mot de passe</string>
+    <string name="login_invalid_credentials">Login/Mot de passe incorrect. Veuillez ré-essayer.</string>
+    <string name="login_auth_error">Une erreur est survenue lors de l\'authentification. Veuillez ré-essayer.</string>
+    <string name="login_register_conflict">Ce numéro de téléphone est déjà utilisé par un utilisateur Weet.</string>
+    <string name="login_register_error">Une erreur est survenue lors de la création de votre compte. Veuillez ré-essayer.</string>
+    <string name="login_register_invalid_cellphone">Une erreur est survenue lors de la création de votre compte. Il semblerait que votre numéro
+        de téléphone soit invalide.</string>
+    <string name="login_error">Une erreur est survenue, veuillez ré-essayer.</string>
+    <string name="item_image_contentDescription">Country flag</string>
+    <string name="item_preview_country">Israel (‫ישראל‬‎)</string>
+    <string name="item_preview_dialCode">+972</string>
+    <string name="confirm_account_confirm">Valider</string>
+    <string name="confirm_account_code_hint">Ex: 402907</string>
+    <string name="confirm_account_error">Une erreur est survenue lors de l\'étape de confirmation de votre compte. Veuillez ré-essayer.</string>
+    <string name="confirm_account_invalid_token">Le code de confirmation que vous avez entré est invalide.</string>
+    <string name="confirm_description">Vous allez recevoir un SMS dans quelques instants. Ce SMS contient un code d\'activation permettant
+        de vérifier votre numéro de téléphone. Veuillez entrer ce code d\'activation ci-dessous.</string>
+    <string name="user_profile_viewer_interests"><u>Intérêts</u></string>
+    <string name="user_profile_viewer_empty_interests"><u>...</u></string>
+
+    <!-- ********************************** -->
+    <!--             Components             -->
+    <!-- ********************************** -->
+
+    <!-- Titles -->
+
+    <string name="name_title">Name</string>
+    <string name="address_title">Home address</string>
+    <string name="telephone_title">Telephone</string>
+    <string name="mail_title">E-mail address</string>
+    <string name="facebook_title">Facebook</string>
+    <string name="linkedin_title">Linkedin</string>
+    <string name="snapchat_title">Snapchat</string>
+    <string name="twitter_title">Twitter</string>
+
+    <string name="register_done_title">Congratulations !</string>
+    <string name="register_title">Register</string>
+    <string name="register_connect">Connection</string>
+    <string name="register_create_account">Create my account</string>
+    <string name="register_next">Next</string>
+    <string name="register_name">Complete name</string>
+    <string name="register_email">E-mail address</string>
+    <string name="register_email_repeat">Confirm e-mail address</string>
+    <string name="register_password">New password</string>
+    <string name="register_password_repeat">Confirm password</string>
+    <string name="register_phone">Telephone number</string>
+
+    <!-- Inline -->
+
+    <string name="name_inline">name</string>
+    <string name="address_inline">home address</string>
+    <string name="telephone_inline">telephone number</string>
+    <string name="mail_inline">e-mail address</string>
+    <string name="facebook_inline">Facebook profile</string>
+    <string name="linkedin_inline">Linkedin profile</string>
+    <string name="snapchat_inline">Snapchat profile</string>
+    <string name="twitter_inline">Twitter profile</string>
+
+    <!-- Banners -->
+
+    <string name="profile_showcase_banner_contact">Contact</string>
+    <string name="profile_showcase_banner_social">Social networks</string>
+
+
+    <!-- ********************************** -->
+    <!--               Buttons              -->
+    <!-- ********************************** -->
+
+    <string name="connect_button">Connect</string>
+    <string name="disonnect_button">Logout</string>
+    <string name="retry_button">Retry</string>
+    <string name="delete_user_account">Delete Account</string>
+
+    <!-- ********************************** -->
+    <!--               Dialogs              -->
+    <!-- ********************************** -->
+
+
+    <string name="user_prompt_data">Please enter your</string>
+    <string name="user_new_field">New field : </string>
+    <string name="user_modify_field">Update</string>
+
+    <!-- Authentication -->
+
+    <string name="user_err_authentication">Authentication failed</string>
+    <string name="user_err_authentication_desc">The combination of your e-mail address and your password is incorrect. Please try again.</string>
+
+    <!-- Registration -->
+
+    <string name="user_err_registration">Account creation error</string>
+    <string name="user_err_registration_desc">An error occured while creating your Yoki account. Please try again later.</string>
+    <string name="user_err_email_already_taken">Invalid e-mail address</string>
+    <string name="user_err_password_mismatch">Oops !</string>
+    <string name="user_err_password_mismatch_desc">The two passwords aren\'t identical. Please retry.</string>
+    <string name="user_err_email_already_taken_desc">This e-mail address is already registered with a Yoki account.
+        Please sign-in with your Yoki account credentials.</string>
+
+    <!-- Connection -->
+
+    <string name="user_err_fail_connection">Connection error.</string>
+    <string name="user_err_fail_connection_desc">It seems to be a connection problem. Please try again later.</string>
+    <string name="user_err_fail_account_not_activated">Your account has been created but hasn\'t been activated. Please check
+        your e-mails, or click resend activation if you didn\'t received our activation e-mail.</string>
+    <string name="linkedin_fail_connect">An error occured when authentifying to the LinkedIn platform.</string>
+    <string name="connection">CONNECTION</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="err_play_service">Play Service Error</string>
+    <string name="err_play_service_desc">An error occured with the Google Play Services. Some Yoki features may be unavailable.</string>
+
+    <!-- Content Edition -->
+
+    <string name="user_err_edit_content">Oops ! Cannot update this field.</string>
+    <string name="user_err_field_exist">Oops ! Cannot add this field.</string>
+    <string name="user_err_field_exist_desc">This field has already been added to your Yoki profile !</string>
+    <string name="err_wrong_input_format_title">Oops ! Incorrect entry.</string>
+    <string name="err_wrong_email_format">This e-mail address is invalid. Please verify that its format is conform to the following example : abc@def.xx .</string>
+    <string name="err_wrong_name_format">This name is invalid. It may contain illegal or special characters, or its size is innapropriate.</string>
+    <string name="err_wrong_telephone_format">The telephone number format is invalid. A phone number should only contain decimal numbers, and its size must
+         be between 9 and 15 characters long.</string>
+    <string name="err_wrong_text_format">The text that you have entered contains special illegal characters, or its size is innapropriate.</string>
+    <string name="err_connection">Connection Error</string>
+
+    <!-- Social Sync -->
+
+    <string name="err_linkedin_sync_fail_msg">An error occured while synchronizing your LinkedIn Account. Please try again later.</string>
+    <string name="err_facebook_sync_fail_msg">An error occured while synchronizing your Facebook Account. Please try again later.</string>
+    <string name="err_twitter_sync_fail_msg">An error occured while synchronizing your Twitter Account. Please try again later.</string>
+    <string name="err_twitter_not_installed">In order to attach your Twitter profile to Yoki, please install the Twitter App on your device.</string>
+    <string name="err_beam_corrupted_tag">The data that has been received is corrupted or does not allow to fetch data from a Yoki account. Please try again.</string>
+    <string name="showcase_import_to_contacts">Import to device contacts</string>
+
+    <!-- PopUps -->
+
+    <string name="user_edit_cancel">Cancel</string>
+    <string name="user_edit_confirm">Confirm</string>
+    <string name="OK">OK</string>
+    <string name="resend_activation">Resend Activation</string>
+    <string name="oops">Oops !</string>
+    <string name="confirm_delete_user_account">Warning !</string>
+    <string name="confirm_delete_user_account_desc">Are you sure to delete your account ?</string>
+    <string name="user_account_deleted">Operation Succeed</string>
+    <string name="user_account_deleted_desc">Your Yoki account has been successfully deleted. You will now be redirected to the login screen.</string>
+
+    <!-- Hints -->
+
+    <string name="name_hint">ex: Josh Grant</string>
+    <string name="address_hint">ex : 11555 Motor ave, 90066 Los Angeles</string>
+    <string name="telephone_hint">ex: 1 349 545 9942</string>
+    <string name="mail_hint">ex : josh.grant@yoki-app.com</string>
+
+    <!-- Settings -->
+
+    <string name="err_no_nfc_detected">This device does not support NFC technology. Unfortunately, you won\'t be able to exchange your profile
+        with someone else.</string>
+    <string name="err_no_nfc_enabled">In order to exchange profiles using NFC, please activate this functionnality in the device\'s preferences.</string>
+    <string name="err_no_android_beam_enabled">In order to exchange profiles with another device, Yoki requires that you activate
+        Android Beam in the device\'s preferences.</string>
+    <string name="settings_section_account">Account</string>
+    <string name="settings_section_app">Application</string>
+    <string name="settings_section_about">About</string>
+
+    <!-- ********************************** -->
+    <!--          Settings Elements         -->
+    <!-- ********************************** -->
+
+    <string name="settings_element_authentication">Authentication</string>
+    <string name="settings_element_authentication_desc">Edit the e-mail address you use to sign-in to Yoki</string>
+    <string name="settings_element_change_pass">Password</string>
+    <string name="settings_element_change_pass_desc">Edit the password you use to sign-in to Yoki</string>
+    <string name="settings_element_delete_account">Delete account</string>
+    <string name="settings_element_delete_account_desc">Delete account and all data related to it (irreversible)</string>
+    <string name="settings_element_logout">Logout</string>
+    <string name="settings_element_logout_desc">Disconnect from the Yoki App</string>
+    <string name="settings_element_show_website">Show website</string>
+    <string name="settings_element_show_website_desc">Open Yoki website</string>
+
+
+    <!-- ********************************** -->
+    <!--               Texts                -->
+    <!-- ********************************** -->
+
+    <string name="field_choose_desc">Choose a new field to share from your Yoki profile</string>
+    <string name="register_done_text">Your account is now ready. You can now sign-in using your e-mail address and you password.</string>
+    <string name="shared_no_content">You have not exchanged data with anyone yet. For each people that you met, profiles will be
+        displayed in this section.</string>
+    <string name="nfc_beam_title">Close sharing</string>
+    <string name="nfc_beam">In order to exchange profiles with someone, press the green Share button on both devices. Then, stick the devices back-to-back until the Android Beam
+        window appears on both screens. Finally, press simultaneously on both screens.</string>
+    <string name="gcm_reply_load_profile_fail">Failed to load the content. Would you like to try again ?</string>
+    <string name="delete_user_account_desc">Deleting your account will destroy every data related to your profile. This action will be irreversible.
+        If you want to delete your Yoki account, please click on the Delete Account button.</string>
+
+
+    <!-- ********************************** -->
+    <!--               Other                -->
+    <!-- ********************************** -->
+
+    <string name="title_activity_settings">Preferences</string>
+    <string name="title_activity_user_register_activity">Register</string>
+    <string name="title_activity_about_us">About</string>
+    <string name="title_activity_new_data_field_choose">Add new field</string>
+    <string name="title_activity_user_login">Connection</string>
+    <string name="title_activity_launcher">Yoki</string>
+    <string name="title_activity_user_smart_auth">UserSmartAuthActivity</string>
+    <string name="title_activity_after_sync_display">AfterSyncDisplayActivity</string>
+    <string name="title_activity_nfc_beam">Share</string>
+    <string name="title_activity_facebook">Facebook Connection</string>
+    <string name="title_activity_resend_activation">Resend Activation E-mail</string>
+    <string name="title_activity_settings_authentication">Change Authentication</string>
+    <string name="title_activity_settings_password">Change Password</string>
+    <string name="title_activity_settings_delete_account">Delete Account</string>
+    <string name="title_activity_settings_log_out">Logout</string>
+    <string name="title_activity_settings_open_website"></string>
+    <string name="facebook_app_id">"454298468059114"</string>
+
 </resources>
