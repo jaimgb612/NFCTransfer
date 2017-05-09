@@ -15,7 +15,7 @@ public class FacebookField extends AProfileDataField {
         this.fieldName = "facebook";
         this.fieldDisplayName = "Facebook";
         this.value = fbUserName;
-        this.userId = userId;
+        this.socialId = userId;
         this.deletableType = Deletion.ONLY_DELETABLE;
         this.shared = sharedStatus;
         this.shared = sharedStatus;

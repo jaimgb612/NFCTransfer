@@ -36,9 +36,11 @@ import com.example.nfctransfer.data.AProfileDataField;
 import com.example.nfctransfer.data.enumerations.Deletion;
 import com.example.nfctransfer.data.enumerations.ProfileEntityType;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
+import com.example.nfctransfer.networking.ApiResponses.AuthResponse;
 import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.ProfileField;
 import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.PullSelfProfileResponse;
 import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.SelfProfile;
+import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 import com.example.nfctransfer.networking.HttpCodes;
 import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
@@ -164,6 +166,19 @@ public class ProfileFragment extends Fragment {
         registerForContextMenu(mProfileView);
     }
 
+    private void showInputContentFailDFialog(String errMsg) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        alertDialogBuilder.setTitle(R.string.err_wrong_input_format_title);
+        alertDialogBuilder
+                .setMessage(errMsg)
+                .setCancelable(false)
+                .setPositiveButton(R.string.OK, null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     private void showEditContentFailDialog() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -172,19 +187,6 @@ public class ProfileFragment extends Fragment {
         alertDialogBuilder.setTitle(R.string.user_err_edit_content);
         alertDialogBuilder
                 .setMessage(R.string.user_err_fail_connection_desc)
-                .setCancelable(false)
-                .setPositiveButton(R.string.OK, null);
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void showInputContentFailDFialog(String errMsg) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                getActivity());
-
-        alertDialogBuilder.setTitle(R.string.err_wrong_input_format_title);
-        alertDialogBuilder
-                .setMessage(errMsg)
                 .setCancelable(false)
                 .setPositiveButton(R.string.OK, null);
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -216,28 +218,6 @@ public class ProfileFragment extends Fragment {
         startActivityForResult(openAddFieldActivity, INTENT_CHOSEN_FIELD_KEY);
     }
 
-    private void onCurrentUserDataPulled(SelfProfile profile) {
-
-        String completeName = profile.getFirstname() + " " + profile.getLastname();
-        mUserNameTitle.setText(completeName);
-
-        mAdapter.removeAll();
-
-        for (ProfileField field : profile.getFields()) {
-
-            String fieldName = field.getName();
-            String fieldTextValue = field.getTextValue();
-            String fieldSocialId = field.getSocialId();
-            Boolean sharedStatus = field.getSharedStatus();
-
-            ProfileFieldType fieldType = ProfileFieldType.fromString(fieldName);
-
-            AProfileDataField newField = AProfileDataField.getInstance(fieldType, fieldTextValue, fieldSocialId, sharedStatus);
-            mAdapter.addField(newField);
-        }
-        onItemsLoadComplete();
-    }
-
     private void pullDataForCurrentUser() {
         Call<PullSelfProfileResponse> call;
 
@@ -262,6 +242,39 @@ public class ProfileFragment extends Fragment {
                 t.printStackTrace();
             }
         });
+    }
+
+    private void onCurrentUserDataPulled(SelfProfile profile) {
+
+        String completeName = profile.getFirstname() + " " + profile.getLastname();
+        mUserNameTitle.setText(completeName);
+
+        mAdapter.removeAll();
+
+        for (ProfileField field : profile.getFields()) {
+
+            String fieldName = field.getName();
+            String fieldTextValue = field.getTextValue();
+            String fieldSocialId = field.getSocialId();
+            Boolean sharedStatus = field.getSharedStatus();
+
+            ProfileFieldType fieldType = ProfileFieldType.fromString(fieldName);
+
+            AProfileDataField newField = AProfileDataField.getInstance(fieldType, fieldTextValue, fieldSocialId, sharedStatus);
+            mAdapter.addField(newField);
+        }
+        onItemsLoadComplete();
+    }
+
+    private void onAddField(ProfileFieldType fieldType) {
+        AProfileDataField field = AProfileDataField.getEmptyInstance(fieldType);
+
+        if (field.getFieldEntityType() == ProfileEntityType.DATA) {
+            addEditableField(field);
+        }
+        else {
+
+        }
     }
 
     private void addEditableField(final AProfileDataField field) {
@@ -298,9 +311,9 @@ public class ProfileFragment extends Fragment {
                             showInputContentFailDFialog(mFieldEntryParser.getLastErrMsg());
                         }
                         else {
-                            // NETWORK
                             field.setValue(inputValue);
                             mAdapter.addField(field);
+                            requestAddField(field, profileFields.size() - 1);
                             dialog.dismiss();
                         }
                     }
@@ -310,11 +323,38 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private void editEditableField(final int position) {
-        final AProfileDataField field = profileFields.get(position);
-        final ProfileFieldType fieldType = field.getFieldType();
+    private void requestAddField(AProfileDataField field, final int insertedAtPosition) {
 
-        AlertDialogTools alertDialogTools = new AlertDialogTools(getActivity(), field);
+        Call<SimpleResponse> call;
+        call = NfcTransferApi.getInstance().addProfileField(Session.accessToken,
+                field.getFieldName(), field.getValue(), field.getSocialId());
+
+        call.enqueue(new Callback<SimpleResponse>() {
+            @Override
+            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                int code = response.code();
+
+                if (code != HttpCodes.CREATED) {
+                    mAdapter.removeField(insertedAtPosition);
+                    showEditContentFailDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                t.printStackTrace();
+                mAdapter.removeField(insertedAtPosition);
+                showEditContentFailDialog();
+            }
+        });
+    }
+
+    private void onEditField(final int position) {
+        final AProfileDataField originalField = profileFields.get(position);
+        final AProfileDataField editedField = AProfileDataField(originalField);
+        final ProfileFieldType fieldType = originalField.getFieldType();
+
+        AlertDialogTools alertDialogTools = new AlertDialogTools(getActivity(), originalField);
         final LinearLayout dialogLayout = alertDialogTools.createAlertDialogLayout();
         final EditText input = (EditText) dialogLayout.getChildAt(0);
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
@@ -329,13 +369,13 @@ public class ProfileFragment extends Fragment {
                 })
                 .create();
 
-        input.setText(field.getValue());
+        input.setText(originalField.getValue());
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                Button okButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                final Button okButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -346,9 +386,9 @@ public class ProfileFragment extends Fragment {
                             showInputContentFailDFialog(mFieldEntryParser.getLastErrMsg());
                         }
                         else {
-                            // NETWORK
-                            field.setValue(inputValue);
+                            originalField.setValue(inputValue);
                             mAdapter.editField(position);
+                            requestEditField(originalField, position);
                             dialog.dismiss();
                         }
                     }
@@ -358,23 +398,62 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private void onAddField(ProfileFieldType fieldType) {
-        AProfileDataField field = AProfileDataField.getEmptyInstance(fieldType);
+    private void requestEditField(AProfileDataField field, int isAtPosition) {
 
-        if (field.getFieldEntityType() == ProfileEntityType.DATA) {
-            addEditableField(field);
-        }
-        else {
+        Call<SimpleResponse> call;
+        call = NfcTransferApi.getInstance().editProfileField(Session.accessToken,
+                field.getFieldName(), field.getValue(), field.getSocialId(), field.isShared());
 
-        }
-    }
+        call.enqueue(new Callback<SimpleResponse>() {
+            @Override
+            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                int code = response.code();
 
-    private void onEditField(int position) {
-        editEditableField(position);
+                if (code != HttpCodes.OK) {
+                    // ROLLBACK
+                    showEditContentFailDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                t.printStackTrace();
+                showEditContentFailDialog();
+            }
+        });
     }
 
     private void onDeleteField(int position) {
+        AProfileDataField field = profileFields.get(position);
+
         mAdapter.removeField(position);
+
+        requestDeleteField(field, position);
+    }
+
+    private void requestDeleteField(final AProfileDataField field, final int originalAtPosition) {
+
+        Call<SimpleResponse> call;
+        call = NfcTransferApi.getInstance().deleteProfileField(Session.accessToken, field.getFieldName());
+
+        call.enqueue(new Callback<SimpleResponse>() {
+            @Override
+            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                int code = response.code();
+
+                if (code != HttpCodes.OK) {
+                    mAdapter.addFieldAtPosition(field, originalAtPosition);
+                    showEditContentFailDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                t.printStackTrace();
+                mAdapter.addFieldAtPosition(field, originalAtPosition);
+                showEditContentFailDialog();
+            }
+        });
     }
 
     @Override

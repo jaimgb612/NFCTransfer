@@ -15,7 +15,7 @@ public class LinkedInField extends AProfileDataField {
         this.fieldName = "linkedin";
         this.fieldDisplayName = "LinkedIn";
         this.value = linkedInUserName;
-        this.userId = userId;
+        this.socialId = userId;
         this.deletableType = Deletion.ONLY_DELETABLE;
         this.shared = sharedStatus;
     }

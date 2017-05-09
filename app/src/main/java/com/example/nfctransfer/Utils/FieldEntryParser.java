@@ -17,7 +17,7 @@ public class FieldEntryParser {
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                                               + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static final String TELEPHONE_PATTERN = "/^(\\+?1)?[2-9]\\d{2}[2-9](?!11)\\d{6}$/";
+    private static final String TELEPHONE_PATTERN = "^(\\+?1)?[2-9]\\d{2}[2-9](?!11)\\d{6}$";
     private static final String NAME_PATTERN = "^[^0-9@&\"()!_$*€£`+=\\/;?#]{3,30}$";
     private static final String TEXT_PATTERN = "^[^@&\"()!_$*€£`+=\\/;?#]{5,96}$";
 

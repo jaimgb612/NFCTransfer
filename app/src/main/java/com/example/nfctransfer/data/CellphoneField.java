@@ -17,6 +17,7 @@ public class CellphoneField extends AProfileDataField {
         this.value = cellphoneNb;
         this.deletableType = Deletion.ONLY_EDITABLE;
         this.shared = sharedStatus;
+        this.socialId = null;
     }
 
     public CellphoneField() {

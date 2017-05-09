@@ -14,7 +14,7 @@ public abstract class AProfileDataField {
 
     protected Integer iconResource;
 
-    protected String userId;
+    protected String socialId;
 
     protected ProfileFieldType type;
 
@@ -25,6 +25,8 @@ public abstract class AProfileDataField {
     protected boolean shared;
 
     public AProfileDataField() {}
+
+    protected abstract AProfileDataField clone();
 
     public String getFieldName() {
         return this.fieldName;
@@ -64,6 +66,22 @@ public abstract class AProfileDataField {
 
     public void setDeletableType(Deletion deletable) {
         this.deletableType = deletable;
+    }
+
+    public String getSocialId() {
+        return this.socialId;
+    }
+
+    public AProfileDataField(AProfileDataField field) {
+        this.fieldDisplayName = field.fieldDisplayName;
+        this.fieldName = field.fieldName;
+        this.value = field.value;
+        this.iconResource = field.iconResource;
+        this.socialId = field.socialId;
+        this.type = field.type;
+        this.entityType = field.entityType;
+        this.deletableType = field.deletableType;
+        this.shared = field.shared;
     }
 
     public static AProfileDataField getEmptyInstance(ProfileFieldType type) {

@@ -64,4 +64,16 @@ public class NfcTransferApi {
     public Call<PullSelfProfileResponse> getSelfProfileData(String accessToken) {
         return (service.pullProfileData(accessToken));
     }
+
+    public Call<SimpleResponse> addProfileField(String accessToken, String fieldName, String textValue, String socialId) {
+        return (service.addProfileField(fieldName, accessToken, textValue, socialId));
+    }
+
+    public Call<SimpleResponse> editProfileField(String accessToken, String fieldName, String textValue, String socialId, boolean sharedStatus) {
+        return (service.editProfileField(fieldName, accessToken, textValue, socialId, sharedStatus));
+    }
+
+    public Call<SimpleResponse> deleteProfileField(String accessToken, String fieldName) {
+        return (service.deleteProfileField(fieldName, accessToken));
+    }
 }

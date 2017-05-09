@@ -15,7 +15,7 @@ public class TwitterField extends AProfileDataField {
         this.fieldName = "twitter";
         this.fieldDisplayName = "Twitter";
         this.value = twitterUserName;
-        this.userId = userId;
+        this.socialId = userId;
         this.deletableType = Deletion.ONLY_DELETABLE;
         this.shared = sharedStatus;
     }

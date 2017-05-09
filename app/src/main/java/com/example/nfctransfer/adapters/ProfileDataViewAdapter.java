@@ -137,6 +137,11 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
         notifyItemInserted(fields.size() - 1);
     }
 
+    public void addFieldAtPosition(AProfileDataField field, int position) {
+        fields.add(position, field);
+        notifyItemInserted(position);
+    }
+
     public void editField(int position) {
         notifyItemChanged(position);
     }

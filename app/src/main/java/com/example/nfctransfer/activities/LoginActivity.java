@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 _currentCall = null;
                 int code = response.code();
-                AuthResponse result;;
+                AuthResponse result;
 
                 if (code != HttpCodes.OK) {
                     onRequestFailed();

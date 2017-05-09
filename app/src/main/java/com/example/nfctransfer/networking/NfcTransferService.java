@@ -6,10 +6,13 @@ import com.example.nfctransfer.networking.ApiResponses.RegisterResponse;
 import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NfcTransferService {
@@ -21,6 +24,11 @@ public interface NfcTransferService {
     String INDEX_PASSWORD = "password";
     String INDEX_FIRSTNAME = "firstname";
     String INDEX_LASTNAME = "lastname";
+    String INDEX_FIELD_TEXT_VALUE = "field_text_value";
+    String INDEX_FIELD_SHARED_STATUS = "field_shared_status";
+    String INDEX_FIELD_SOCIAL_ID = "field_social_id";
+
+    String PATH_FIELD_NAME = "field_name";
 
     // AUTHENTICATE USER
     @FormUrlEncoded
@@ -51,5 +59,26 @@ public interface NfcTransferService {
     @GET("/api/profile/self")
     Call<PullSelfProfileResponse> pullProfileData(@Query(INDEX_ACCESS_TOKEN) String accessToken);
 
+    // ADD PROFILE FIELD
+    @FormUrlEncoded
+    @POST("/api/profile/field/{field_name}")
+    Call<SimpleResponse> addProfileField(@Path(PATH_FIELD_NAME) String fieldName,
+                                          @Field(INDEX_ACCESS_TOKEN) String accessToken,
+                                          @Field(INDEX_FIELD_TEXT_VALUE) String textValue,
+                                          @Field(INDEX_FIELD_SOCIAL_ID) String fieldSocialId);
+
+    // EDIT PROFILE FIELD
+    @FormUrlEncoded
+    @PUT("/api/profile/field/{field_name}")
+    Call<SimpleResponse> editProfileField(@Path(PATH_FIELD_NAME) String fieldName,
+                                          @Field(INDEX_ACCESS_TOKEN) String accessToken,
+                                          @Field(INDEX_FIELD_TEXT_VALUE) String textValue,
+                                          @Field(INDEX_FIELD_SOCIAL_ID) String fieldSocialId,
+                                          @Field(INDEX_FIELD_SHARED_STATUS) boolean sharedStatus);
+
+    // DELETE PROFILE FIELD
+    @DELETE("/api/profile/field/{field_name}")
+    Call<SimpleResponse> deleteProfileField(@Path(PATH_FIELD_NAME) String fieldName,
+                                            @Query(INDEX_ACCESS_TOKEN) String accessToken);
 }
 

@@ -17,6 +17,7 @@ public class HomeAddressField extends AProfileDataField {
         this.value = homeAddress;
         this.deletableType = Deletion.DELETABLE_EDITABLE;
         this.shared = sharedStatus;
+        this.socialId = null;
     }
 
     public HomeAddressField() {

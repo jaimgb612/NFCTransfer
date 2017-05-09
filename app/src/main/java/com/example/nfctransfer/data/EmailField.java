@@ -17,6 +17,7 @@ public class EmailField extends AProfileDataField {
         this.value = emailAddress;
         this.deletableType = Deletion.DELETABLE_EDITABLE;
         this.shared = sharedStatus;
+        this.socialId = null;
     }
 
     public EmailField() {
