@@ -1,4 +1,4 @@
 package com.example.nfctransfer.networking.ApiResponses;
 
-public interface IApiResponse  {
+public interface IApiResponse {
 }

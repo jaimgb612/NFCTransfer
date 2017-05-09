@@ -2,7 +2,7 @@
 <resources>
 
     <color name="transparent">#00000000</color>
-    <color name="primary">#3C515C</color>
+    <color name="primary">#2980b9</color>
 
     <color name="view_pager_selected_tab_color">#ff1400</color>
 
@@ -10,6 +10,8 @@
     <color name="icon_enabled">#414141</color>
     <color name="icon_disabled">#8e8e8e</color>
     -->
+
+    <color name="fab_icon_color">#f6f7f7f7</color>
 
     <color name="icon_enabled">#414141</color>
     <color name="icon_disabled">#00000000</color>

@@ -12,6 +12,7 @@
 
     <at.markushi.ui.CircleButton
         android:id="@+id/fragment_me_main_button"
+        android:backgroundTint="@color/primary"
         android:layout_gravity="center"
         android:layout_width="200dip"
         android:layout_height="200dip"

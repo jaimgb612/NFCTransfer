@@ -1,13 +1,10 @@
 package com.example.nfctransfer.data;
 
+import com.example.nfctransfer.data.enumerations.Deletion;
+import com.example.nfctransfer.data.enumerations.ProfileEntityType;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
 
 public abstract class AProfileDataField {
-
-    public enum Deletion {
-        DELETABLE,
-        NOT_DELETABLE
-    }
 
     protected String fieldDisplayName;
 
@@ -21,19 +18,19 @@ public abstract class AProfileDataField {
 
     protected ProfileFieldType type;
 
-    protected Deletion isDeletable;
+    protected ProfileEntityType entityType;
 
-    private boolean shared;
+    protected Deletion deletableType;
 
-    public AProfileDataField() {
-        this.isDeletable = Deletion.DELETABLE;
-    }
+    protected boolean shared;
+
+    public AProfileDataField() {}
 
     public String getFieldName() {
         return this.fieldName;
     }
 
-    public String getFielDisplayName() {
+    public String getFieldDisplayName() {
         return this.fieldDisplayName;
     }
 
@@ -41,11 +38,17 @@ public abstract class AProfileDataField {
         return this.value;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public Integer getIconResource() {
         return this.iconResource;
     }
 
     public ProfileFieldType getFieldType() { return this.type; }
+
+    public ProfileEntityType getFieldEntityType() { return this.entityType; }
 
     public boolean isShared() {
         return this.shared;
@@ -56,11 +59,11 @@ public abstract class AProfileDataField {
     }
 
     public Deletion isDeletable() {
-        return this.isDeletable;
+        return this.deletableType;
     }
 
-    public void setDeletable(Deletion deletable) {
-        this.isDeletable = deletable;
+    public void setDeletableType(Deletion deletable) {
+        this.deletableType = deletable;
     }
 
     public static AProfileDataField getEmptyInstance(ProfileFieldType type) {
@@ -81,20 +84,20 @@ public abstract class AProfileDataField {
         return null;
     }
 
-    public static AProfileDataField getInstance(ProfileFieldType type, String textValue, String socialId) {
+    public static AProfileDataField getInstance(ProfileFieldType type, String textValue, String socialId, boolean sharedStatus) {
         switch (type) {
             case CELLPHONE:
-                return new CellphoneField(textValue);
+                return new CellphoneField(textValue, sharedStatus);
             case EMAIL:
-                return new EmailField(textValue);
+                return new EmailField(textValue, sharedStatus);
             case ADDRESS:
-                return new HomeAddressField(textValue);
+                return new HomeAddressField(textValue, sharedStatus);
             case FACEBOOK:
-                return new FacebookField(textValue, socialId);
+                return new FacebookField(textValue, socialId, sharedStatus);
             case TWITTER:
-                return new TwitterField(textValue, socialId);
+                return new TwitterField(textValue, socialId, sharedStatus);
             case LINKEDIN:
-                return new LinkedInField(textValue, socialId);
+                return new LinkedInField(textValue, socialId, sharedStatus);
         }
         return null;
     }

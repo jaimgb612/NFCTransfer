@@ -11,4 +11,6 @@
     <dimen name="activity_login_button_padding">10dp</dimen>
     <dimen name="activity_login_button_text_size">17sp</dimen>
 
+    <dimen name="alert_dialog_input_text_size">7dp</dimen>
+
 </resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.nfctransfer.networking.NfcTransferApi;
+import com.example.nfctransfer.networking.Session;
 import com.example.nfctransfer.sharedPreferences.Preferences;
 
 public class Launcher extends Activity {
@@ -28,16 +29,16 @@ public class Launcher extends Activity {
 
         init();
 
-        String userToken = Preferences.getInstance().getUserAccessToken(context);
         String userId = Preferences.getInstance().getSavedUserId(context);
+        String accessToken = Preferences.getInstance().getUserAccessToken(context);
 
-        if (userToken == null || userId == null) {
+        if (accessToken == null || userId == null) {
             startActivity(new Intent(context, LoginActivity.class));
             finish();
         }
         else {
-            //Globals.userToken = userToken;
-            //Globals.userId = userId;
+            Session.userId = userId;
+            Session.accessToken = accessToken;
             startActivity(new Intent(context, MainActivity.class));
             finish();
         }

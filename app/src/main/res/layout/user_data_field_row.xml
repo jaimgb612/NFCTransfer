@@ -9,7 +9,7 @@
         android:id="@+id/field_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
@@ -40,7 +40,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/field_value"
-        android:textColor="#000000"
+        android:fontFamily="sans-serif-light"
+        android:textColor="#f8212121"
         android:layout_alignBottom="@+id/field_icon"
         android:layout_alignStart="@+id/field_title" />
 

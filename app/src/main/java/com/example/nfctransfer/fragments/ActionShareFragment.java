@@ -11,9 +11,7 @@ import com.example.nfctransfer.R;
 
 public class ActionShareFragment extends Fragment {
 
-    public ActionShareFragment() {
-        // Required empty public constructor
-    }
+    public ActionShareFragment() {}
 
     public static ActionShareFragment newInstance() {
         ActionShareFragment fragment = new ActionShareFragment();

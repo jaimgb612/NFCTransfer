@@ -1,18 +1,22 @@
 package com.example.nfctransfer.networking;
 
 import com.example.nfctransfer.networking.ApiResponses.AuthResponse;
+import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.PullSelfProfileResponse;
 import com.example.nfctransfer.networking.ApiResponses.RegisterResponse;
 import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface NfcTransferService {
 
     String INDEX_USERID = "userid";
     String INDEX_TOKEN = "token";
+    String INDEX_ACCESS_TOKEN = "token";
     String INDEX_CELLPHONE = "cellphone";
     String INDEX_PASSWORD = "password";
     String INDEX_FIRSTNAME = "firstname";
@@ -42,5 +46,10 @@ public interface NfcTransferService {
     @POST("/verify")
     Call<SimpleResponse> verifyAccount(@Field(INDEX_USERID) String userId,
                                        @Field(INDEX_TOKEN) String token);
+
+    // GET SELF PROFILE
+    @GET("/api/profile/self")
+    Call<PullSelfProfileResponse> pullProfileData(@Query(INDEX_ACCESS_TOKEN) String accessToken);
+
 }
 

@@ -14,7 +14,6 @@
     <string name="prefs_file_name">yoki_preferences</string>
     <string name="alert_dialog_ok_button">Ok</string>
 
-
     <!-- ********************************** -->
     <!--                Menus               -->
     <!-- ********************************** -->
@@ -27,7 +26,6 @@
     <!-- ********************************** -->
     <!--                Login               -->
     <!-- ********************************** -->
-
 
     <!-- Strings related to login -->
     <string name="login_button_connection">Sign-in</string>
@@ -100,7 +98,6 @@
     <!--               Dialogs              -->
     <!-- ********************************** -->
 
-
     <string name="user_prompt_data">Please enter your</string>
     <string name="user_new_field">New field : </string>
     <string name="user_modify_field">Update</string>
@@ -165,13 +162,11 @@
     <string name="resend_activation">Resend Activation</string>
     <string name="oops">Oops !</string>
 
-
-    <string name="name_hint">ex: Josh Grant</string>
-    <string name="address_hint">ex : 11555 Motor ave, 90066 Los Angeles</string>
-    <string name="telephone_hint">ex: 1 349 545 9942</string>
-    <string name="mail_hint">ex : josh.grant@yoki-app.com</string>
-
-
+    <string name="firstname_hint">ex: Josh</string>
+    <string name="lastname_hint">ex: Parker</string>
+    <string name="address_hint">ex : 123 Park ave, 90066 Los Angeles</string>
+    <string name="cellphone_hint">ex: 1 349 545 9942</string>
+    <string name="email_hint">ex : email@example.com</string>
 
     <string name="facebook_app_id">"454298468059114"</string>
 

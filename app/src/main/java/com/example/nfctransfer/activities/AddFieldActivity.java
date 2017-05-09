@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.nfctransfer.R;
 import com.example.nfctransfer.adapters.AddFieldViewAdapter;
 import com.example.nfctransfer.data.AProfileDataField;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
+import com.example.nfctransfer.fragments.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,17 @@ public class AddFieldActivity extends AppCompatActivity {
         mAdapter = new AddFieldViewAdapter(getApplicationContext(), 0, mFieldsToDisplay);
 
         mListView.setAdapter(mAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProfileFieldType chosenFieldType = mFieldsToDisplay.get(position).getFieldType();
+                Intent intent = new Intent();
+                intent.putExtra(ProfileFragment.INTENT_EXTRA_CHOSEN_FIELD_KEY, chosenFieldType);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
 
