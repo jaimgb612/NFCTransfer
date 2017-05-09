@@ -9,9 +9,11 @@ public class FacebookField extends AProfileDataField {
 
         this.type = ProfileFieldType.FACEBOOK;
         this.iconResource = R.drawable.facebook500;
-        this.fieldName = "Facebook";
+        this.fieldName = "facebook";
+        this.fieldDisplayName = "Facebook";
         this.value = fbUserName;
         this.userId = userId;
+        this.isDeletable = Deletion.DELETABLE;
     }
 
     public FacebookField() {

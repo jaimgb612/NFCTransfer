@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/login_background_color"
+    tools:context=".activities.ConfirmAccountActivity">
+
+
+    <LinearLayout
+        android:padding="15dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginBottom="30dp"
+            android:textColor="#dfdfdf"
+            android:fontFamily="sans-serif-light"
+            android:textSize="@dimen/activity_login_edittext_text_size"
+            android:text="@string/confirm_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:inputType="number"
+            android:textAlignment="center"
+            android:singleLine="true"
+            android:layout_marginBottom="15dp"
+            android:textColorHint="@color/edittext_hint_color"
+            android:textColor="#dfdfdf"
+            android:fontFamily="sans-serif-light"
+            android:textSize="@dimen/activity_confirm_account_text_size"
+            android:padding="@dimen/activity_login_edittext_padding"
+            android:background="@drawable/login_round_corner_view"
+            android:id="@+id/confirm_code_input"
+            android:hint="@string/confirm_account_code_hint"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                style="?android:attr/borderlessButtonStyle"
+                android:fontFamily="sans-serif-light"
+                android:enabled="false"
+                android:id="@+id/button_confirm"
+                android:text="@string/confirm_account_confirm"
+                android:textColor="#dfdfdf"
+                android:textSize="@dimen/activity_login_button_text_size"
+                android:background="@drawable/login_round_corner_view_inverted"
+                android:layout_width="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:id="@+id/action_progress_bar"
+                android:indeterminateTint="@color/login_background_color"
+                android:background="@drawable/perfect_round_corner_view_inverted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -9,8 +9,10 @@ public class EmailField extends AProfileDataField {
 
         this.type = ProfileFieldType.EMAIL;
         this.iconResource = R.drawable.email;
-        this.fieldName = "Email";
+        this.fieldName = "email";
+        this.fieldDisplayName = "Email";
         this.value = emailAddress;
+        this.isDeletable = Deletion.DELETABLE;
     }
 
     public EmailField() {

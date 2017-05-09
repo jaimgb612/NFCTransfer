@@ -2,7 +2,6 @@ package com.example.nfctransfer.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +40,7 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
         final AProfileDataField field = fields.get(position);
 
         holder.fieldIcon.setImageResource(field.getIconResource());
-        holder.fieldTitle.setText(field.getFieldName());
+        holder.fieldTitle.setText(field.getFielDisplayName());
         holder.fieldValue.setText(field.getValue());
         holder.shareSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -89,7 +88,6 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
     public void setPosition(int position) {
         this.position = position;
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 

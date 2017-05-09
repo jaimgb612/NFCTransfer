@@ -9,9 +9,11 @@ public class TwitterField extends AProfileDataField {
 
         this.type = ProfileFieldType.TWITTER;
         this.iconResource = R.drawable.twitter;
-        this.fieldName = "Twitter";
+        this.fieldName = "twitter";
+        this.fieldDisplayName = "Twitter";
         this.value = twitterUserName;
         this.userId = userId;
+        this.isDeletable = Deletion.DELETABLE;
     }
 
     public TwitterField() {

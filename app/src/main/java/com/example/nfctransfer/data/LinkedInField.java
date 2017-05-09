@@ -9,9 +9,11 @@ public class LinkedInField extends AProfileDataField {
 
         this.type = ProfileFieldType.LINKEDIN;
         this.iconResource = R.drawable.linkedin;
-        this.fieldName = "LinkedIn";
+        this.fieldName = "linkedin";
+        this.fieldDisplayName = "LinkedIn";
         this.value = linkedInUserName;
         this.userId = userId;
+        this.isDeletable = Deletion.DELETABLE;
     }
 
     public LinkedInField() {

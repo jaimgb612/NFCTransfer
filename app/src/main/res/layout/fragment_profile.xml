@@ -9,16 +9,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:paddingTop="@dimen/_25sdp"
-        android:paddingLeft="@dimen/_4sdp"
-        android:paddingRight="@dimen/_4sdp"
-        android:background="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/profile_data_view">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:paddingTop="@dimen/_25sdp"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:background="@android:color/transparent"
+            android:scrollbars="vertical"
+            android:cacheColorHint="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/profile_data_view">
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add_field"

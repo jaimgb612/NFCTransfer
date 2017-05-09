@@ -9,6 +9,8 @@ public abstract class AProfileDataField {
         NOT_DELETABLE
     }
 
+    protected String fieldDisplayName;
+
     protected String fieldName;
 
     protected String value;
@@ -23,8 +25,16 @@ public abstract class AProfileDataField {
 
     private boolean shared;
 
+    public AProfileDataField() {
+        this.isDeletable = Deletion.DELETABLE;
+    }
+
     public String getFieldName() {
         return this.fieldName;
+    }
+
+    public String getFielDisplayName() {
+        return this.fieldDisplayName;
     }
 
     public String getValue() {
@@ -43,10 +53,6 @@ public abstract class AProfileDataField {
 
     public void setShared(boolean shared) {
         this.shared = shared;
-    }
-
-    public AProfileDataField() {
-        this.isDeletable = Deletion.DELETABLE;
     }
 
     public Deletion isDeletable() {
@@ -71,6 +77,24 @@ public abstract class AProfileDataField {
                 return new TwitterField();
             case LINKEDIN:
                 return new LinkedInField();
+        }
+        return null;
+    }
+
+    public static AProfileDataField getInstance(ProfileFieldType type, String textValue, String socialId) {
+        switch (type) {
+            case CELLPHONE:
+                return new CellphoneField(textValue);
+            case EMAIL:
+                return new EmailField(textValue);
+            case ADDRESS:
+                return new HomeAddressField(textValue);
+            case FACEBOOK:
+                return new FacebookField(textValue, socialId);
+            case TWITTER:
+                return new TwitterField(textValue, socialId);
+            case LINKEDIN:
+                return new LinkedInField(textValue, socialId);
         }
         return null;
     }

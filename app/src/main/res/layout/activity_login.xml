@@ -26,47 +26,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:animateLayoutChanges="true"
-                android:weightSum="1.0"
-                android:orientation="horizontal"
+
+            <EditText
+                android:singleLine="true"
+                android:layout_marginBottom="15dp"
+                android:textColorHint="#dfdfdf"
+                android:textColor="#dfdfdf"
+                android:fontFamily="sans-serif-light"
+                android:textSize="@dimen/activity_login_edittext_text_size"
+                android:padding="@dimen/activity_login_edittext_padding"
+                android:background="@drawable/login_round_corner_view"
+                android:id="@+id/firstname_input"
+                android:hint="@string/login_form_firstname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:singleLine="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="0.7"
-                    android:layout_marginBottom="15dp"
-                    android:textColorHint="#dfdfdf"
-                    android:textColor="#dfdfdf"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="@dimen/activity_login_edittext_text_size"
-                    android:padding="@dimen/activity_login_edittext_padding"
-                    android:background="@drawable/login_round_corner_view"
-                    android:id="@+id/firstname_input"
-                    android:hint="@string/login_form_firstname"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
-
-                <Spinner
-                    android:layout_marginLeft="5dp"
-                    android:dropDownWidth="70dp"
-                    android:popupBackground="@color/login_background_color"
-                    android:layout_weight="0.3"
-                    android:layout_marginBottom="15dp"
-                    android:textColorHint="#dfdfdf"
-                    android:textColor="#dfdfdf"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="@dimen/activity_login_edittext_text_size"
-                    android:padding="@dimen/activity_login_edittext_padding"
-                    android:background="@drawable/login_round_corner_view"
-                    android:id="@+id/age_input"
-                    android:hint="@string/login_form_age"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
+                android:layout_height="match_parent" />
 
             <EditText
                 android:singleLine="true"

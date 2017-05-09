@@ -4,18 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.nfctransfer.R;
 import com.example.nfctransfer.activities.AddFieldActivity;
@@ -26,6 +28,7 @@ import com.example.nfctransfer.data.CellphoneField;
 import com.example.nfctransfer.data.EmailField;
 import com.example.nfctransfer.data.HomeAddressField;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
+import com.example.nfctransfer.views.VerticalViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,15 +43,20 @@ public class ProfileFragment extends Fragment {
     private Context context;
     private Activity activity;
 
+    private VerticalViewPager mViewPager;
     private ProfileDataViewAdapter mAdapter;
     private RecyclerView mProfileView;
+    private SwipeRefreshLayout mRefreshLayout;
     private FloatingActionButton mButtonAddField;
 
     private List<ProfileFieldType> allFields = new ArrayList<>();
     private List<AProfileDataField> profile = new ArrayList<>();
 
-    public ProfileFragment() {
-        // Required empty public constructor
+    public ProfileFragment() {}
+
+    public static ProfileFragment newInstance() {
+        ProfileFragment fragment = new ProfileFragment();
+        return fragment;
     }
 
     private void buildFieldsModel() {
@@ -74,6 +82,7 @@ public class ProfileFragment extends Fragment {
 
         mProfileView = (RecyclerView) activity.findViewById(R.id.profile_data_view);
         mButtonAddField = (FloatingActionButton) activity.findViewById(R.id.button_add_field);
+        mViewPager = (VerticalViewPager) activity.findViewById(R.id.view_pager);
 
         mButtonAddField.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +99,45 @@ public class ProfileFragment extends Fragment {
 
         mProfileView.setAdapter(mAdapter);
 
+        mRefreshLayout = (SwipeRefreshLayout) activity.findViewById(R.id.swipe_refresh);
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
+
+        mViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mRefreshLayout.setEnabled(false);
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        refreshItems();
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        Log.e("DOWN", "DOWN");
+                        break;
+                }
+                return false;
+            }
+        });
+
         mAdapter.notifyDataSetChanged();
 
         registerForContextMenu(mProfileView);
     }
 
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
+    void refreshItems() {
+        mRefreshLayout.setEnabled(true);
+        mRefreshLayout.setRefreshing(true);
+
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete() {
+        mRefreshLayout.setRefreshing(false);
     }
 
     private void onButtonAddFieldClicked() {

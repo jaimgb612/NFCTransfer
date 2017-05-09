@@ -9,8 +9,10 @@ public class HomeAddressField extends AProfileDataField {
 
         this.type = ProfileFieldType.ADDRESS;
         this.iconResource = R.drawable.map103;
-        this.fieldName = "Address";
+        this.fieldName = "home_address";
+        this.fieldDisplayName = "Address";
         this.value = homeAddress;
+        this.isDeletable = Deletion.DELETABLE;
     }
 
     public HomeAddressField() {

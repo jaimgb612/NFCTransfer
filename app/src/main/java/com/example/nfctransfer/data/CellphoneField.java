@@ -9,7 +9,8 @@ public class CellphoneField extends AProfileDataField {
 
         this.type = ProfileFieldType.CELLPHONE;
         this.iconResource = R.drawable.phone370;
-        this.fieldName = "Cellphone";
+        this.fieldName = "cellphone";
+        this.fieldDisplayName = "Cellphone";
         this.value = cellphoneNb;
         this.isDeletable = Deletion.NOT_DELETABLE;
     }
