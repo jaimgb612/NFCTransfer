@@ -8,16 +8,19 @@ import android.os.Bundle;
 import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
 import com.example.nfctransfer.sharedPreferences.Preferences;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import io.fabric.sdk.android.Fabric;
 
 public class Launcher extends Activity {
 
-    private static final String TWITTER_KEY = "WzUWAjqUgPFtEu59YzH5LDvDL";
-    private static final String TWITTER_SECRET = "dq610ftAN4l69z9Vmdzb1k3Og2O9NYDiqhY9Bz1FgpnddcAnuP";
+    private static final String TWITTER_KEY = "9yC2j5hJUaO1GtLcRZZPZHOLI";
+    private static final String TWITTER_SECRET = "YY72XRSNnnUmMobwTExCnylqBicuDoUNahqVADLI7NV1ljPisb";
 
     public void init(){
         //FacebookSdk.sdkInitialize(getApplicationContext());
-        //TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        //Fabric.with(this, new Twitter(authConfig));
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
         NfcTransferApi.getInstance();
     }
 

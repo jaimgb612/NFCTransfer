@@ -24,5 +24,20 @@ public class CellphoneField extends AProfileDataField {
         this("", true);
     }
 
+    public AProfileDataField copy() {
+        AProfileDataField c = new CellphoneField();
+
+        c.type = this.type;
+        c.entityType = this.entityType;
+        c.iconResource = this.iconResource;
+        c.fieldName = this.fieldName;
+        c.fieldDisplayName = this.fieldDisplayName;
+        c.value = this.value;
+        c.deletableType = this.deletableType;
+        c.shared = this.shared;
+        c.socialId = this.socialId;
+
+        return c;
+    }
 
 }

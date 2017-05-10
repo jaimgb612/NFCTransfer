@@ -4,10 +4,55 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.example.nfctransfer.views.VerticalViewPager
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view_pager">
-    </com.example.nfctransfer.views.VerticalViewPager>
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:background="@color/login_background_secondary_color"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <com.ogaclejapan.smarttablayout.SmartTabLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/view_pager_tab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:paddingBottom="0dp"
+            app:stl_defaultTabTextSize="14sp"
+            app:stl_indicatorInterpolation="smart"
+            app:stl_indicatorColor="@color/primary"
+            app:stl_indicatorThickness="4dp"
+            app:stl_indicatorCornerRadius="1dp"
+            app:stl_underlineColor="@color/transparent"
+            app:stl_defaultTabTextColor="@color/primary"
+            app:stl_distributeEvenly="true" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_repeat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

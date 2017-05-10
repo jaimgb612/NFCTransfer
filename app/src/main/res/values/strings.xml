@@ -1,33 +1,7 @@
 <resources>
 
-    <!-- ********************************** -->
-    <!--                Base                -->
-    <!-- ********************************** -->
-
     <string name="app_name">NFCTransfer</string>
-    <string name="action_settings">Preferences</string>
-    <string name="about_us">About</string>
-    <string name="yokiTabName">Yoki</string>
-    <string name="meTabName">Me</string>
-    <string name="sharedTabName">Shared</string>
-
-    <string name="prefs_file_name">yoki_preferences</string>
     <string name="alert_dialog_ok_button">Ok</string>
-
-    <!-- ********************************** -->
-    <!--                Menus               -->
-    <!-- ********************************** -->
-
-    <string name="profile_row_menu_title">Choose an option</string>
-    <string name="menu_edit">Modify</string>
-    <string name="menu_sync">Synchronize again</string>
-    <string name="menu_remove">Delete</string>
-
-    <!-- ********************************** -->
-    <!--                Login               -->
-    <!-- ********************************** -->
-
-    <!-- Strings related to login -->
     <string name="login_button_connection">Sign-in</string>
     <string name="login_button_register">Sign-up</string>
     <string name="login_button_cancel">Cancel</string>
@@ -35,7 +9,6 @@
     <string name="login_form_lastname">Lastname</string>
     <string name="login_form_password">Password</string>
     <string name="login_invalid_credentials">Incorrect Login/Password. Please try again.</string>
-    <string name="login_not_activated">This account is not activated.</string>
     <string name="login_account_not_found">We can\'t find any existing account with this phone number.</string>
     <string name="login_auth_error">An error ocurred while signin-in. Please retry.</string>
     <string name="login_register_conflict">This cellphone number is already used by another user.</string>
@@ -48,126 +21,45 @@
     <string name="item_preview_dialCode">+424</string>
     <string name="confirm_account_confirm">Valider</string>
     <string name="confirm_account_code_hint">Ex: 402907</string>
-    <string name="confirm_account_error">Une erreur est survenue lors de l\'étape de confirmation de votre compte. Veuillez ré-essayer.</string>
-    <string name="confirm_account_invalid_token">Le code de confirmation que vous avez entré est invalide.</string>
     <string name="confirm_description">You will receive a text message very soon. This message contains a verification code. Please enter the
         code below.</string>
-
-    <!-- ********************************** -->
-    <!--             Components             -->
-    <!-- ********************************** -->
-
-    <!-- Titles -->
-
-    <string name="name_title">Name</string>
-    <string name="address_title">Home address</string>
-    <string name="telephone_title">Telephone</string>
-    <string name="mail_title">E-mail address</string>
-    <string name="facebook_title">Facebook</string>
-    <string name="linkedin_title">Linkedin</string>
-    <string name="snapchat_title">Snapchat</string>
-    <string name="twitter_title">Twitter</string>
-
-    <!-- Inline -->
-
-    <string name="name_inline">name</string>
-    <string name="address_inline">home address</string>
-    <string name="telephone_inline">telephone number</string>
-    <string name="mail_inline">e-mail address</string>
-    <string name="facebook_inline">Facebook profile</string>
-    <string name="linkedin_inline">Linkedin profile</string>
-    <string name="snapchat_inline">Snapchat profile</string>
-    <string name="twitter_inline">Twitter profile</string>
-
-    <!-- Banners -->
-
-    <string name="profile_showcase_banner_contact">Contact</string>
-    <string name="profile_showcase_banner_social">Social networks</string>
-
-
-    <!-- ********************************** -->
-    <!--               Buttons              -->
-    <!-- ********************************** -->
-
-    <string name="connect_button">Connect</string>
-    <string name="disonnect_button">Logout</string>
-    <string name="retry_button">Retry</string>
-    <string name="delete_user_account">Delete Account</string>
-
-    <!-- ********************************** -->
-    <!--               Dialogs              -->
-    <!-- ********************************** -->
-
+    <string name="android_beam_title">Close sharing</string>
+    <string name="android_beam">In order to exchange profiles with someone, press the green Share button on both devices. Then, stick the devices back-to-back until the Android Beam
+        window appears on both screens. Finally, press simultaneously on both screens.</string>
+    <string name="err_no_nfc_detected">This device does not support NFC technology. Unfortunately, you won\'t be able to exchange your profile
+        with someone else.</string>
+    <string name="err_no_nfc_enabled">In order to exchange profiles using NFC, please activate this functionnality in the device\'s preferences.</string>
+    <string name="err_no_android_beam_enabled">In order to exchange profiles with another device, Yoki requires that you activate
+        Android Beam in the device\'s preferences.</string>
     <string name="user_prompt_data">Please enter your</string>
     <string name="user_new_field">New field : </string>
-    <string name="user_modify_field">Update</string>
-
-    <!-- Authentication -->
-
-    <string name="user_err_authentication">Authentication failed</string>
-    <string name="user_err_authentication_desc">The combination of your e-mail address and your password is incorrect. Please try again.</string>
-
-    <!-- Registration -->
-
-    <string name="user_err_registration">Account creation error</string>
-    <string name="user_err_registration_desc">An error occured while creating your Yoki account. Please try again later.</string>
-    <string name="user_err_email_already_taken">Invalid e-mail address</string>
-    <string name="user_err_password_mismatch">Oops !</string>
-    <string name="user_err_password_mismatch_desc">The two passwords aren\'t identical. Please retry.</string>
-    <string name="user_err_email_already_taken_desc">This e-mail address is already registered with a Yoki account.
-        Please sign-in with your Yoki account credentials.</string>
     <string name="user_err_send_activation_error">An error occured while sending the verification code.</string>
     <string name="user_err_confirm_account_error">An error occured while trying to verify your account.</string>
     <string name="user_err_confirm_account_invalid_code">It seems that the code you provided is invalid.</string>
-
-    <!-- Connection -->
-
-    <string name="user_err_fail_connection">Connection error.</string>
     <string name="user_err_fail_connection_desc">It seems to be a connection problem. Please try again later.</string>
-    <string name="user_err_fail_account_not_activated">Your account has been created but hasn\'t been activated. Please check
-        your e-mails, or click resend activation if you didn\'t received our activation e-mail.</string>
-    <string name="linkedin_fail_connect">An error occured when authentifying to the LinkedIn platform.</string>
-    <string name="connection">CONNECTION</string>
-    <string name="forgot_password">Forgot your password?</string>
-    <string name="err_play_service">Play Service Error</string>
-    <string name="err_play_service_desc">An error occured with the Google Play Services. Some Yoki features may be unavailable.</string>
-
-    <!-- Content Edition -->
-
     <string name="user_err_edit_content">Oops ! Cannot update this field.</string>
-    <string name="user_err_field_exist">Oops ! Cannot add this field.</string>
-    <string name="user_err_field_exist_desc">This field has already been added to your Yoki profile !</string>
     <string name="err_wrong_input_format_title">Oops ! Incorrect entry.</string>
     <string name="err_wrong_email_format">This e-mail address is invalid. Please verify that its format is conform to the following example : abc@def.xx .</string>
     <string name="err_wrong_name_format">This name is invalid. It may contain illegal or special characters, or its size is innapropriate.</string>
     <string name="err_wrong_telephone_format">The telephone number format is invalid. A phone number should only contain decimal numbers, and its size must
          be between 9 and 15 characters long.</string>
     <string name="err_wrong_text_format">The text that you have entered contains special illegal characters, or its size is innapropriate.</string>
-    <string name="err_connection">Connection Error</string>
-
-    <!-- Social Sync -->
-
-    <string name="err_linkedin_sync_fail_msg">An error occured while synchronizing your LinkedIn Account. Please try again later.</string>
-    <string name="err_facebook_sync_fail_msg">An error occured while synchronizing your Facebook Account. Please try again later.</string>
-    <string name="err_twitter_sync_fail_msg">An error occured while synchronizing your Twitter Account. Please try again later.</string>
-    <string name="err_twitter_not_installed">In order to attach your Twitter profile to Yoki, please install the Twitter App on your device.</string>
     <string name="err_beam_corrupted_tag">The data that has been received is corrupted or does not allow to fetch data from a Yoki account. Please try again.</string>
-    <string name="showcase_import_to_contacts">Import to device contacts</string>
-
-    <!-- PopUps -->
-
     <string name="user_edit_cancel">Cancel</string>
     <string name="user_edit_confirm">Confirm</string>
     <string name="OK">OK</string>
-    <string name="resend_activation">Resend Activation</string>
     <string name="oops">Oops !</string>
-
     <string name="firstname_hint">ex: Josh</string>
     <string name="lastname_hint">ex: Parker</string>
     <string name="address_hint">ex : 123 Park ave, 90066 Los Angeles</string>
     <string name="cellphone_hint">ex: 1 349 545 9942</string>
     <string name="email_hint">ex : email@example.com</string>
-
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="err_linkedin_sync_fail_msg">An error occured while synchronizing your LinkedIn Account. Please try again later.</string>
+    <string name="err_facebook_sync_fail_msg">An error occured while synchronizing your Facebook Account. Please try again later.</string>
+    <string name="err_twitter_sync_fail_msg">An error occured while synchronizing your Twitter Account. Please try again later.</string>
+    <string name="err_twitter_not_installed">In order to attach your Twitter profile to Yoki, please install the Twitter App on your device.</string>
+    <string name="showcase_import_to_contacts">Import to device contacts</string>
     <string name="facebook_app_id">"454298468059114"</string>
 
 </resources>

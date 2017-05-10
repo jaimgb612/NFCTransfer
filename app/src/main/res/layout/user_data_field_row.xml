@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/profile_data_field_layout"
     android:descendantFocusability="blocksDescendants"
     android:layout_height="75dp">
 

@@ -26,7 +26,7 @@ public abstract class AProfileDataField {
 
     public AProfileDataField() {}
 
-    protected abstract AProfileDataField clone();
+    public abstract AProfileDataField copy();
 
     public String getFieldName() {
         return this.fieldName;

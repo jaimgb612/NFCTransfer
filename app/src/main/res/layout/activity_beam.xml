@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:padding="20sp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/beam_activity_mainlayout"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginBottom="15sp"
+            android:textSize="35sp"
+            android:text="@string/android_beam_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/android_beam"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone"
+        android:background="@color/progress_layout_background"
+        android:id="@+id/beam_activity_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/beam_activity_retry_connection_layout"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:id="@+id/beam_activity_retry_connection_button"
+            android:text="Ré-essayer"
+            android:textSize="18dp" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/user_err_fail_connection_desc"
+            android:layout_marginBottom="10dp"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

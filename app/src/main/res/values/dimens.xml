@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
     <dimen name="activity_login_edittext_padding">11dp</dimen>
     <dimen name="activity_login_edittext_text_size">19sp</dimen>
     <dimen name="activity_confirm_account_text_size">25sp</dimen>
-
-    <dimen name="activity_login_button_padding">10dp</dimen>
+    <dimen name="toolbar_height">@dimen/_50sdp</dimen>
+    <dimen name="activity_main_tab_layout_icon_size">@dimen/_22sdp</dimen>
     <dimen name="activity_login_button_text_size">17sp</dimen>
-
-    <dimen name="alert_dialog_input_text_size">7dp</dimen>
 
 </resources>

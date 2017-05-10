@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,7 +37,6 @@ import com.example.nfctransfer.data.AProfileDataField;
 import com.example.nfctransfer.data.enumerations.Deletion;
 import com.example.nfctransfer.data.enumerations.ProfileEntityType;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
-import com.example.nfctransfer.networking.ApiResponses.AuthResponse;
 import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.ProfileField;
 import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.PullSelfProfileResponse;
 import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.SelfProfile;
@@ -44,6 +44,11 @@ import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 import com.example.nfctransfer.networking.HttpCodes;
 import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
+import com.example.nfctransfer.socialAPIs.ASocialAPI;
+import com.example.nfctransfer.socialAPIs.FacebookAPI;
+import com.example.nfctransfer.socialAPIs.LinkedinAPI;
+import com.example.nfctransfer.socialAPIs.SynchronizableElement;
+import com.example.nfctransfer.socialAPIs.TwitterAPI;
 import com.example.nfctransfer.views.VerticalViewPager;
 
 import java.io.Serializable;
@@ -64,7 +69,6 @@ public class ProfileFragment extends Fragment {
     private Context context;
     private Activity activity;
 
-    private VerticalViewPager mViewPager;
     private ProfileDataViewAdapter mAdapter;
     private RecyclerView mProfileView;
     private SwipeRefreshLayout mRefreshLayout;
@@ -75,11 +79,14 @@ public class ProfileFragment extends Fragment {
     private List<ProfileFieldType> allFields = new ArrayList<>();
     private List<AProfileDataField> profileFields = new ArrayList<>();
 
-    public ProfileFragment() {}
+    public static LinkedinAPI linkedinAPI = new LinkedinAPI();
+    public static TwitterAPI twitterAPI = new TwitterAPI();
+    public static FacebookAPI facebookAPI = new FacebookAPI();
 
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
+    private enum ApiTaskType {
+        CREATE,
+        UPDATE,
+        DELETE,
     }
 
     private void buildFieldsModel() {
@@ -101,8 +108,8 @@ public class ProfileFragment extends Fragment {
         mFieldEntryParser = new FieldEntryParser(context);
 
         mProfileView = (RecyclerView) activity.findViewById(R.id.profile_data_view);
+        mProfileView.setNestedScrollingEnabled(false);
         mButtonAddField = (FloatingActionButton) activity.findViewById(R.id.button_add_field);
-        mViewPager = (VerticalViewPager) activity.findViewById(R.id.view_pager);
 
         mButtonAddField.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,17 +155,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        mViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mRefreshLayout.setEnabled(false);
-                if ((event.getAction() == MotionEvent.ACTION_DOWN) && mViewPager.getCurrentItem() == 0) {
-                    refreshItems();
-                }
-                return false;
-            }
-        });
-
         mAdapter.notifyDataSetChanged();
 
         mUserNameTitle = (TextView ) activity.findViewById(R.id.user_profile_name);
@@ -166,11 +162,11 @@ public class ProfileFragment extends Fragment {
         registerForContextMenu(mProfileView);
     }
 
-    private void showInputContentFailDFialog(String errMsg) {
+    private void showErrorDialog(int titleRes, String errMsg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getActivity());
 
-        alertDialogBuilder.setTitle(R.string.err_wrong_input_format_title);
+        alertDialogBuilder.setTitle(titleRes);
         alertDialogBuilder
                 .setMessage(errMsg)
                 .setCancelable(false)
@@ -179,18 +175,64 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void showEditContentFailDialog() {
-
+    private void showErrorDialog(int titleRes, int msgRes) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getActivity());
 
-        alertDialogBuilder.setTitle(R.string.user_err_edit_content);
+        alertDialogBuilder.setTitle(titleRes);
         alertDialogBuilder
-                .setMessage(R.string.user_err_fail_connection_desc)
+                .setMessage(msgRes)
                 .setCancelable(false)
                 .setPositiveButton(R.string.OK, null);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void showSocialFieldSyncFailDialog(ProfileFieldType fieldType) {
+        Resources resources = getResources();
+        String errMsg;
+
+        switch (fieldType) {
+            case FACEBOOK:
+                errMsg = resources.getString(R.string.err_facebook_sync_fail_msg);
+                break;
+            case LINKEDIN:
+                errMsg = resources.getString(R.string.err_linkedin_sync_fail_msg);
+                break;
+            case TWITTER:
+                errMsg = resources.getString(R.string.err_twitter_sync_fail_msg);
+                break;
+            default:
+                errMsg = null;
+                break;
+        }
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        alertDialogBuilder.setTitle(R.string.oops);
+        alertDialogBuilder
+                .setMessage(errMsg)
+                .setPositiveButton(R.string.OK, null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void rollbackOnRequestFail(AProfileDataField field, ApiTaskType taskType, int position) {
+
+        switch (taskType) {
+            case CREATE:
+                mAdapter.removeField(position);
+                break;
+            case UPDATE:
+                mAdapter.editFieldAtPosition(field, position);
+                break;
+            case DELETE:
+                mAdapter.addFieldAtPosition(field, position);
+                break;
+        }
+
+        showErrorDialog(R.string.user_err_edit_content, R.string.user_err_fail_connection_desc);
     }
 
     void refreshItems() {
@@ -229,10 +271,9 @@ public class ProfileFragment extends Fragment {
                 PullSelfProfileResponse result;
 
                 if (code != HttpCodes.OK) {
-                    //onRequestFailed();
+
                     return;
                 }
-
                 result = response.body();
                 onCurrentUserDataPulled(result.getUser());
             }
@@ -273,7 +314,17 @@ public class ProfileFragment extends Fragment {
             addEditableField(field);
         }
         else {
-
+            switch (fieldType) {
+                case FACEBOOK:
+                    synchronizeWithFacebookApi();
+                    break;
+                case LINKEDIN:
+                    synchronizeWithLinkedinApi();
+                    break;
+                case TWITTER:
+                    synchronizeWithTwitterApi();
+                    break;
+            }
         }
     }
 
@@ -308,7 +359,7 @@ public class ProfileFragment extends Fragment {
                         String inputValue = input.getText().toString();
 
                         if (!mFieldEntryParser.parse(inputValue, fieldType)) {
-                            showInputContentFailDFialog(mFieldEntryParser.getLastErrMsg());
+                            showErrorDialog(R.string.err_wrong_input_format_title, mFieldEntryParser.getLastErrMsg());
                         }
                         else {
                             field.setValue(inputValue);
@@ -323,7 +374,7 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private void requestAddField(AProfileDataField field, final int insertedAtPosition) {
+    private void requestAddField(final AProfileDataField field, final int insertedAtPosition) {
 
         Call<SimpleResponse> call;
         call = NfcTransferApi.getInstance().addProfileField(Session.accessToken,
@@ -335,23 +386,21 @@ public class ProfileFragment extends Fragment {
                 int code = response.code();
 
                 if (code != HttpCodes.CREATED) {
-                    mAdapter.removeField(insertedAtPosition);
-                    showEditContentFailDialog();
+                    rollbackOnRequestFail(field, ApiTaskType.CREATE, insertedAtPosition);
                 }
             }
 
             @Override
             public void onFailure(Call<SimpleResponse> call, Throwable t) {
                 t.printStackTrace();
-                mAdapter.removeField(insertedAtPosition);
-                showEditContentFailDialog();
+                rollbackOnRequestFail(field, ApiTaskType.CREATE, insertedAtPosition);
             }
         });
     }
 
     private void onEditField(final int position) {
         final AProfileDataField originalField = profileFields.get(position);
-        final AProfileDataField editedField = AProfileDataField(originalField);
+        final AProfileDataField backupField = originalField.copy();
         final ProfileFieldType fieldType = originalField.getFieldType();
 
         AlertDialogTools alertDialogTools = new AlertDialogTools(getActivity(), originalField);
@@ -383,12 +432,12 @@ public class ProfileFragment extends Fragment {
                         String inputValue = input.getText().toString();
 
                         if (!mFieldEntryParser.parse(inputValue, fieldType)) {
-                            showInputContentFailDFialog(mFieldEntryParser.getLastErrMsg());
+                            showErrorDialog(R.string.err_wrong_input_format_title, mFieldEntryParser.getLastErrMsg());
                         }
                         else {
                             originalField.setValue(inputValue);
                             mAdapter.editField(position);
-                            requestEditField(originalField, position);
+                            requestEditField(originalField, backupField, position);
                             dialog.dismiss();
                         }
                     }
@@ -398,7 +447,7 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private void requestEditField(AProfileDataField field, int isAtPosition) {
+    private void requestEditField(final AProfileDataField field, final AProfileDataField backupField, final int atPosition) {
 
         Call<SimpleResponse> call;
         call = NfcTransferApi.getInstance().editProfileField(Session.accessToken,
@@ -410,28 +459,25 @@ public class ProfileFragment extends Fragment {
                 int code = response.code();
 
                 if (code != HttpCodes.OK) {
-                    // ROLLBACK
-                    showEditContentFailDialog();
+                    rollbackOnRequestFail(backupField, ApiTaskType.UPDATE, atPosition);
                 }
             }
 
             @Override
             public void onFailure(Call<SimpleResponse> call, Throwable t) {
                 t.printStackTrace();
-                showEditContentFailDialog();
+                rollbackOnRequestFail(backupField, ApiTaskType.UPDATE, atPosition);
             }
         });
     }
 
     private void onDeleteField(int position) {
         AProfileDataField field = profileFields.get(position);
-
         mAdapter.removeField(position);
-
         requestDeleteField(field, position);
     }
 
-    private void requestDeleteField(final AProfileDataField field, final int originalAtPosition) {
+    private void requestDeleteField(final AProfileDataField field, final int atPosition) {
 
         Call<SimpleResponse> call;
         call = NfcTransferApi.getInstance().deleteProfileField(Session.accessToken, field.getFieldName());
@@ -442,16 +488,88 @@ public class ProfileFragment extends Fragment {
                 int code = response.code();
 
                 if (code != HttpCodes.OK) {
-                    mAdapter.addFieldAtPosition(field, originalAtPosition);
-                    showEditContentFailDialog();
+                    rollbackOnRequestFail(field, ApiTaskType.DELETE, atPosition);
                 }
             }
 
             @Override
             public void onFailure(Call<SimpleResponse> call, Throwable t) {
                 t.printStackTrace();
-                mAdapter.addFieldAtPosition(field, originalAtPosition);
-                showEditContentFailDialog();
+                rollbackOnRequestFail(field, ApiTaskType.DELETE, atPosition);
+            }
+        });
+    }
+
+    private void synchronizeWithFacebookApi() {
+
+        facebookAPI.synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+            @Override
+            public void synchronizationResult(boolean status) {
+                if (status) {
+                    facebookAPI.getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                        @Override
+                        public void onProfileSynchronized(SynchronizableElement element) {
+                            if (element == null) {
+                                showSocialFieldSyncFailDialog(ProfileFieldType.FACEBOOK);
+                            } else {
+                                //addNewSynchronizedFieldToListView(ProfileFieldType.FACEBOOK, element);
+                            }
+                        }
+                    });
+                } else {
+                    showSocialFieldSyncFailDialog(ProfileFieldType.FACEBOOK);
+                }
+            }
+        });
+    }
+
+    private void synchronizeWithTwitterApi() {
+
+        twitterAPI.synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+            @Override
+            public void synchronizationResult(boolean status) {
+                if (status) {
+                    twitterAPI.getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                        @Override
+                        public void onProfileSynchronized(SynchronizableElement element) {
+                            if (element == null) {
+                                showSocialFieldSyncFailDialog(ProfileFieldType.TWITTER);
+                            } else {
+                                //addNewSynchronizedFieldToListView(ProfileFieldType.TWITTER, element);
+                            }
+                        }
+                    });
+                } else {
+                    if (twitterAPI.isApplicationInstalled(context)) {
+                        //showSocialFieldSyncRequireAppInstall(ProfileFieldType.TWITTER);
+                    }
+                    else {
+                        showSocialFieldSyncFailDialog(ProfileFieldType.TWITTER);
+                    }
+                }
+            }
+        });
+    }
+
+    private void synchronizeWithLinkedinApi() {
+
+        linkedinAPI.synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+            @Override
+            public void synchronizationResult(boolean status) {
+                if (status) {
+                    linkedinAPI.getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                        @Override
+                        public void onProfileSynchronized(SynchronizableElement element) {
+                            if (element == null) {
+                                showSocialFieldSyncFailDialog(ProfileFieldType.LINKEDIN);
+                            } else {
+                                //addNewSynchronizedFieldToListView(ProfileFieldType.LINKEDIN, element);
+                            }
+                        }
+                    });
+                } else {
+                    showSocialFieldSyncFailDialog(ProfileFieldType.LINKEDIN);
+                }
             }
         });
     }
