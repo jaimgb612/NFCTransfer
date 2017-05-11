@@ -152,6 +152,13 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
 
         mAdapter.notifyDataSetChanged();
 
+        mAdapter.setSharedStatusListener(new ProfileDataViewAdapter.SharedStatusChangedListener() {
+            @Override
+            public void onSharedStatusChanged(AProfileDataField field, AProfileDataField backupField, int position) {
+                requestEditField(field, backupField, position);
+            }
+        });
+
         mUserNameTitle = (TextView ) activity.findViewById(R.id.user_profile_name);
 
         registerForContextMenu(mProfileView);

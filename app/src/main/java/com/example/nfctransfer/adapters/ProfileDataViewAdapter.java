@@ -21,12 +21,17 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
     private List<AProfileDataField> fields;
     private int position;
     private View.OnCreateContextMenuListener listener;
+    private SharedStatusChangedListener sharedStatusListener;
 
     private static final int DATA_MAX_SIZE = 22;
 
     public ProfileDataViewAdapter(Context _context, List<AProfileDataField> _fields) {
         this.context = _context;
         this.fields = _fields;
+    }
+
+    public interface SharedStatusChangedListener {
+        void onSharedStatusChanged(AProfileDataField fieldBeforeChange, AProfileDataField backupBeforeChange, int position);
     }
 
     @Override
@@ -42,11 +47,16 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
         holder.fieldIcon.setImageResource(field.getIconResource());
         holder.fieldTitle.setText(field.getFieldDisplayName());
         holder.fieldValue.setText(cutData(field.getValue()));
-        holder.shareSwitch.setChecked(field.isShared());
+        holder.shareSwitch.setCheckedImmediatelyNoEvent(field.isShared());
         holder.shareSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AProfileDataField backupField = field.copy();
                 field.setShared(isChecked);
+
+                if (sharedStatusListener != null) {
+                    sharedStatusListener.onSharedStatusChanged(backupField, field, position);
+                }
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -61,6 +71,8 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
             @Override
             public void onClick(View v) {
                 AProfileDataField field = fields.get(position);
+                AProfileDataField backupField = field.copy();
+
                 boolean inversedShare = !field.isShared();
 
                 field.setShared(inversedShare);
@@ -117,6 +129,10 @@ public class ProfileDataViewAdapter extends RecyclerView.Adapter<ProfileDataView
 
     public void setCreateMenuListener(View.OnCreateContextMenuListener listener) {
         this.listener = listener;
+    }
+
+    public void setSharedStatusListener(SharedStatusChangedListener listener) {
+        this.sharedStatusListener = listener;
     }
 
     public void removeAll() {
