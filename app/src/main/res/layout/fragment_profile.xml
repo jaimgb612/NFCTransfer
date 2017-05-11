@@ -13,14 +13,14 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_height="@dimen/_90sdp"
             android:background="@color/primary"
             android:elevation="2dp"
             android:layout_centerHorizontal="true">
 
             <com.pkmmte.view.CircularImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_75sdp"
                 android:src="@drawable/profile_pic_unknow"
                 app:border="true"
                 app:border_color="#EEEEEE"
@@ -38,12 +38,12 @@
                 android:id="@+id/user_profile_name"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="9dp"
-                android:textSize="30dp" />
+                android:textSize="@dimen/_25sdp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:paddingTop="@dimen/_15sdp"
+            android:paddingTop="@dimen/_6sdp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
@@ -53,8 +53,8 @@
                 android:layout_height="match_parent">
 
                 <android.support.v7.widget.RecyclerView
-                    android:paddingLeft="@dimen/_4sdp"
-                    android:paddingRight="@dimen/_4sdp"
+                    android:paddingLeft="@dimen/_2sdp"
+                    android:paddingRight="@dimen/_2sdp"
                     android:background="@android:color/transparent"
                     android:scrollbars="vertical"
                     android:cacheColorHint="@android:color/transparent"

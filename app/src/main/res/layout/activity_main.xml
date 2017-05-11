@@ -26,7 +26,7 @@
             android:paddingBottom="0dp"
             app:stl_defaultTabTextSize="14sp"
             app:stl_indicatorInterpolation="smart"
-            app:stl_indicatorColor="@color/primary"
+            app:stl_indicatorColor="#3bb1ff"
             app:stl_indicatorThickness="4dp"
             app:stl_indicatorCornerRadius="1dp"
             app:stl_underlineColor="@color/transparent"

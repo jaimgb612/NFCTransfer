@@ -15,11 +15,10 @@ import com.example.nfctransfer.adapters.SocialProfileFieldAdapter;
 import com.example.nfctransfer.data.AProfileDataField;
 import com.example.nfctransfer.data.enumerations.ProfileEntityType;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.ProfileField;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.SelfProfile;
+import com.example.nfctransfer.networking.ApiResponses.Profile.ProfileField;
+import com.example.nfctransfer.networking.ApiResponses.Profile.Profile;
 import com.example.nfctransfer.utils.ContactAdder;
 import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class ProfileDisplayer extends AppCompatActivity {
         boolean displayNonSocialPart = false;
         boolean displaySocialPart = false;
 
-        SelfProfile profile = (SelfProfile) intent.getSerializableExtra(EXTRA_KEY_PROFILE);
+        Profile profile = (Profile) intent.getSerializableExtra(EXTRA_KEY_PROFILE);
         //hasToDbCreate = intent.getBooleanExtra(YokiGlobals.Keys.INTENT_USERDATA_NEW, false);
 
         completeName = profile.getFirstname() + " " + profile.getLastname();

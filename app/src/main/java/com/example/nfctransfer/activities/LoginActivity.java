@@ -1,6 +1,7 @@
 package com.example.nfctransfer.activities;
 
 import android.animation.LayoutTransition;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -40,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Converter;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     public static final String INTENT_EXTRA_CELLPHONE_KEY = "extra_cellphone";
     public static final String INTENT_EXTRA_PASSWORD_KEY = "extra_password";

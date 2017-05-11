@@ -3,7 +3,7 @@ package com.example.nfctransfer.networking;
 import android.content.Context;
 
 import com.example.nfctransfer.networking.ApiResponses.AuthResponse;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.PullSelfProfileResponse;
+import com.example.nfctransfer.networking.ApiResponses.Profile.PullProfileResponse;
 import com.example.nfctransfer.networking.ApiResponses.RegisterResponse;
 import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 import com.example.nfctransfer.sharedPreferences.Preferences;
@@ -61,8 +61,12 @@ public class NfcTransferApi {
         return (service.verifyAccount(userId, token));
     }
 
-    public Call<PullSelfProfileResponse> getSelfProfileData(String accessToken) {
+    public Call<PullProfileResponse> getSelfProfileData(String accessToken) {
         return (service.pullProfileData(accessToken));
+    }
+
+    public Call<PullProfileResponse> getTargetProfileData(String accessToken, String targetId) {
+        return (service.pullTargetProfileData(targetId, accessToken));
     }
 
     public Call<SimpleResponse> addProfileField(String accessToken, String fieldName, String textValue, String socialId) {

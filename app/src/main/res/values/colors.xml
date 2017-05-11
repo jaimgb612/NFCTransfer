@@ -4,8 +4,8 @@
     <color name="transparent">#00000000</color>
     <color name="primary">#2980b9</color>
     <color name="fab_icon_color">#f6f7f7f7</color>
-    <color name="icon_enabled">#414141</color>
-    <color name="icon_disabled">#00000000</color>
+    <color name="icon_enabled">#f9e1e1e1</color>
+    <color name="icon_disabled">#b4b4b4</color>
     <color name="login_background_color">#2980b9</color>
     <color name="login_background_secondary_color">#3498db</color>
     <color name="edittext_hint_color">#92dedede</color>

@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nfctransfer.R;
-import com.example.nfctransfer.activities.ProfileDisplayer;
 import com.example.nfctransfer.utils.AlertDialogTools;
 import com.example.nfctransfer.utils.FieldEntryParser;
 import com.example.nfctransfer.activities.AddFieldActivity;
@@ -37,9 +36,9 @@ import com.example.nfctransfer.data.AProfileDataField;
 import com.example.nfctransfer.data.enumerations.Deletion;
 import com.example.nfctransfer.data.enumerations.ProfileEntityType;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.ProfileField;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.PullSelfProfileResponse;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.SelfProfile;
+import com.example.nfctransfer.networking.ApiResponses.Profile.ProfileField;
+import com.example.nfctransfer.networking.ApiResponses.Profile.PullProfileResponse;
+import com.example.nfctransfer.networking.ApiResponses.Profile.Profile;
 import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 import com.example.nfctransfer.networking.HttpCodes;
 import com.example.nfctransfer.networking.NfcTransferApi;
@@ -280,17 +279,16 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
     }
 
     private void pullDataForCurrentUser() {
-        Call<PullSelfProfileResponse> call;
+        Call<PullProfileResponse> call;
 
         call = NfcTransferApi.getInstance().getSelfProfileData(Session.accessToken);
-        call.enqueue(new Callback<PullSelfProfileResponse>() {
+        call.enqueue(new Callback<PullProfileResponse>() {
             @Override
-            public void onResponse(Call<PullSelfProfileResponse> call, Response<PullSelfProfileResponse> response) {
+            public void onResponse(Call<PullProfileResponse> call, Response<PullProfileResponse> response) {
                 int code = response.code();
-                PullSelfProfileResponse result;
+                PullProfileResponse result;
 
                 if (code != HttpCodes.OK) {
-
                     return;
                 }
                 result = response.body();
@@ -298,13 +296,13 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
             }
 
             @Override
-            public void onFailure(Call<PullSelfProfileResponse> call, Throwable t) {
+            public void onFailure(Call<PullProfileResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
     }
 
-    private void onCurrentUserDataPulled(SelfProfile profile) {
+    private void onCurrentUserDataPulled(Profile profile) {
 
         String completeName = profile.getFirstname() + " " + profile.getLastname();
         mUserNameTitle.setText(completeName);
@@ -323,6 +321,7 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
             AProfileDataField newField = AProfileDataField.getInstance(fieldType, fieldTextValue, fieldSocialId, sharedStatus);
             mAdapter.addField(newField);
         }
+        onItemsLoadComplete();
         onItemsLoadComplete();
     }
 

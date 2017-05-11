@@ -1,7 +1,7 @@
 package com.example.nfctransfer.networking;
 
 import com.example.nfctransfer.networking.ApiResponses.AuthResponse;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.PullSelfProfileResponse;
+import com.example.nfctransfer.networking.ApiResponses.Profile.PullProfileResponse;
 import com.example.nfctransfer.networking.ApiResponses.RegisterResponse;
 import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 
@@ -18,6 +18,7 @@ import retrofit2.http.Query;
 public interface NfcTransferService {
 
     String INDEX_USERID = "userid";
+    String INDEX_TARGETID = "targetid";
     String INDEX_TOKEN = "token";
     String INDEX_ACCESS_TOKEN = "token";
     String INDEX_CELLPHONE = "cellphone";
@@ -57,7 +58,12 @@ public interface NfcTransferService {
 
     // GET SELF PROFILE
     @GET("/api/profile/self")
-    Call<PullSelfProfileResponse> pullProfileData(@Query(INDEX_ACCESS_TOKEN) String accessToken);
+    Call<PullProfileResponse> pullProfileData(@Query(INDEX_ACCESS_TOKEN) String accessToken);
+
+    // GET TARGET PROFILE
+    @GET("/api/profile/{targetid}")
+    Call<PullProfileResponse> pullTargetProfileData(@Path(INDEX_TARGETID) String targetId,
+                                             @Query(INDEX_ACCESS_TOKEN) String accessToken);
 
     // ADD PROFILE FIELD
     @FormUrlEncoded

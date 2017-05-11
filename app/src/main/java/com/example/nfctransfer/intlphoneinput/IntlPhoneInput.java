@@ -25,8 +25,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import java.util.Locale;
 
 public class IntlPhoneInput extends RelativeLayout {
-    //private final String DEFAULT_COUNTRY = Locale.getDefault().getCountry();
-    private final String DEFAULT_COUNTRY = "US";
+    private final String DEFAULT_COUNTRY = Locale.getDefault().getCountry();
 
     // UI Views
     private Spinner mCountrySpinner;

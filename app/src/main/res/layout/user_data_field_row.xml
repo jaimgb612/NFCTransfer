@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:descendantFocusability="blocksDescendants"
-    android:layout_height="75dp">
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/_66sdp">
 
     <ImageView
         android:id="@+id/field_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_44sdp"
+        android:layout_height="@dimen/_44sdp"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
@@ -16,9 +16,10 @@
         android:id="@+id/field_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15sp"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_1sdp"
         android:textColor="@color/primary"
-        android:textSize="20sp"
+        android:textSize="@dimen/_19sdp"
         android:layout_alignTop="@+id/field_icon"
         android:layout_toEndOf="@id/field_icon" />
 
@@ -36,11 +37,13 @@
 
     <TextView
         android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/field_value"
         android:fontFamily="sans-serif-light"
         android:textColor="#f8212121"
+        android:textSize="@dimen/_17sdp"
         android:layout_alignBottom="@+id/field_icon"
         android:layout_alignStart="@+id/field_title" />
 

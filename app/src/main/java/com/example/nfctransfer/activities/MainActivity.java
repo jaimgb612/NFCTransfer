@@ -97,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (position) {
                     case 0:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.plus));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.share_filled));
                         break;
                     case 1:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.plus));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.user_male_filled));
                         break;
                     case 2:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.plus));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.conference_call_filled));
                         break;
                     default:
                         throw new IllegalStateException("Invalid position: " + position);

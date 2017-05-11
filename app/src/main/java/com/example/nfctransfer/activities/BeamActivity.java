@@ -18,21 +18,26 @@ import com.example.nfctransfer.R;
 import com.example.nfctransfer.ndeftools.Message;
 import com.example.nfctransfer.ndeftools.MimeRecord;
 import com.example.nfctransfer.ndeftools.util.activity.NfcBeamWriterActivity;
+import com.example.nfctransfer.networking.ApiResponses.Profile.Profile;
+import com.example.nfctransfer.networking.ApiResponses.Profile.PullProfileResponse;
+import com.example.nfctransfer.networking.HttpCodes;
+import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
 
 import java.io.UnsupportedEncodingException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BeamActivity extends NfcBeamWriterActivity {
 
     private final static String NFCTRANSFER_TAG = "NFCTRANSFER_NDEF_RECORD";
     protected Message message;
     private Context context;
-    //private UserData MatchedUser;
     private LinearLayout mainLayout;
     private RelativeLayout errConnectionLayout;
     private ProgressBar progressBar;
-    private String targetRegId;
-
 
     public void activateProgressBar(final boolean refreshing) {
         if (refreshing) {
@@ -55,7 +60,7 @@ public class BeamActivity extends NfcBeamWriterActivity {
             }
         });
     }
-    
+
     public void onReceivedTagCorrupted(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -68,50 +73,42 @@ public class BeamActivity extends NfcBeamWriterActivity {
     }
 
 
+    private void displayTargetProfile(Profile profile) {
+        Intent intent = new Intent(context, ProfileDisplayer.class);
+        intent.putExtra(ProfileDisplayer.EXTRA_KEY_PROFILE, profile);
+        startActivity(intent);
+        finish();
+    }
+
     private void retrieveTargetData(final String targetUserId){
 
-//        Call<ApiUserData> call;
-//
-//        activateProgressBar(true);
-//        call = apiActions.retrieveTargetUserContent(targetUserId);
-//        call.enqueue(new Callback<ApiUserData>() {
-//            @Override
-//            public void onResponse(Response<ApiUserData> response, Retrofit retrofit) {
-//                Integer statusCode = response.code();
-//
-//                if (statusCode == ApiStatusCode.HTTP_OK) {
-//                    ApiUserData apiUserData = response.body();
-//                    UserData userData = apiUserData.getUserInfo();
-//                    activateProgressBar(false);
-//                    goToProfileShowCase(userData);
-//                } else if (statusCode == ApiStatusCode.HTTP_FORBIDDEN) {
-//                    startActivity(new Intent(context, UserLoginActivity.class));
-//                    finish();
-//                } else {
-//                    onRetrieveUserDataFail(targetUserId);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                onRetrieveUserDataFail(targetUserId);
-//            }
-//        });
+        Call<PullProfileResponse> call;
 
-        Intent intent = new Intent(context, ProfileDisplayer.class);
-        intent.putExtra("PROFILE", profile);
-        startActivity(intent);
+        call = NfcTransferApi.getInstance().getTargetProfileData(Session.accessToken, targetUserId);
+        call.enqueue(new Callback<PullProfileResponse>() {
+            @Override
+            public void onResponse(Call<PullProfileResponse> call, Response<PullProfileResponse> response) {
+                int code = response.code();
+                PullProfileResponse result;
+
+                if (code != HttpCodes.OK) {
+                    onRetrieveUserDataFail(targetUserId);
+                    return;
+                }
+                result = response.body();
+                Profile profile = result.getUser();
+                displayTargetProfile(profile);
+            }
+
+            @Override
+            public void onFailure(Call<PullProfileResponse> call, Throwable t) {
+                t.printStackTrace();
+                onRetrieveUserDataFail(targetUserId);
+            }
+        });
     }
 
-    private void goToProfileShowCase(String userData) {
-//        Intent intent = new Intent(this, ProfileShowCase.class);
-//        intent.putExtra(YokiGlobals.Keys.INTENT_USERDATA_KEY, userData);
-//        intent.putExtra(YokiGlobals.Keys.INTENT_USERDATA_NEW, true);
-//        startActivity(intent);
-//        finish();
-    }
-
-    private void notificateBeamedUser(final String targetRegId){
+    private void notififyBeamedUser(final String targetRegId){
 
 //        Call<ApiBasicResponse> call;
 //
@@ -138,7 +135,6 @@ public class BeamActivity extends NfcBeamWriterActivity {
 
     private void init(){
         context = getApplicationContext();
-        //MatchedUser = new UserData();
         mainLayout = (LinearLayout) findViewById(R.id.beam_activity_mainlayout);
         errConnectionLayout = (RelativeLayout) findViewById(R.id.beam_activity_retry_connection_layout);
         progressBar = (ProgressBar) findViewById(R.id.beam_activity_progress_bar);
@@ -187,7 +183,7 @@ public class BeamActivity extends NfcBeamWriterActivity {
             return;
         }
         targetId = new String(message.get(1).getNdefRecord().getPayload());
-        notificateBeamedUser(targetRegId);
+        notififyBeamedUser(targetId);
         retrieveTargetData(targetId);
     }
 
@@ -233,11 +229,4 @@ public class BeamActivity extends NfcBeamWriterActivity {
 
     @Override
     protected void onTagLost() {}
-
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-        retrieveTargetData("");
-    }
 }

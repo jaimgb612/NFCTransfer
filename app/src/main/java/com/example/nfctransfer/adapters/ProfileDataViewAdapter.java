@@ -4,18 +4,13 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.nfctransfer.R;
 import com.example.nfctransfer.data.AProfileDataField;
-import com.example.nfctransfer.data.enumerations.Deletion;
-import com.example.nfctransfer.fragments.ProfileFragment;
-import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.ProfileField;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import java.util.List;
