@@ -1,4 +1,4 @@
-package com.example.nfctransfer.Utils;
+package com.example.nfctransfer.utils;
 
 import android.content.Context;
 import android.text.InputType;
@@ -31,7 +31,15 @@ public class AlertDialogTools {
         EditText alertDialogEditText = new EditText(context);
         LinearLayout alertDialogLayout = new LinearLayout(context);
         alertDialogEditText.setTextSize(context.getResources().getDimension(R.dimen._7sdp));
-        alertDialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        if (fieldType == ProfileFieldType.CELLPHONE) {
+            alertDialogEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+        }
+        else {
+            alertDialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+
+        alertDialogEditText.setTextSize(14);
         alertDialogEditText.setHint(getFieldHint());
         alertDialogLayout.setOrientation(LinearLayout.VERTICAL);
         alertDialogLayout.setGravity(Gravity.CENTER_HORIZONTAL);

@@ -1,0 +1,183 @@
+package com.example.nfctransfer.activities;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.example.nfctransfer.R;
+import com.example.nfctransfer.adapters.NonSocialProfileFieldAdapter;
+import com.example.nfctransfer.adapters.SocialProfileFieldAdapter;
+import com.example.nfctransfer.data.AProfileDataField;
+import com.example.nfctransfer.data.enumerations.ProfileEntityType;
+import com.example.nfctransfer.data.enumerations.ProfileFieldType;
+import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.ProfileField;
+import com.example.nfctransfer.networking.ApiResponses.PullSelfProfile.SelfProfile;
+import com.example.nfctransfer.utils.ContactAdder;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProfileDisplayer extends AppCompatActivity {
+
+    public static final String EXTRA_KEY_PROFILE = "extra_key_profile";
+
+    private ExpandableHeightListView mSocialFieldsListView;
+    private ExpandableHeightListView mNonSocialFieldsListView;
+    private List<AProfileDataField> mSocialFields;
+    private List<AProfileDataField> mNonSocialFields;
+    private RelativeLayout mSocialFieldsLayout;
+    private RelativeLayout mNotSocialFieldsLayout;
+    private ContactAdder mContactAdder;
+
+    private String completeName = null;
+    private String cellphoneNumber = null;
+    private String emailAddr = null;
+    private boolean hasToDbCreate;
+
+    private void init() {
+        mNonSocialFieldsListView = (ExpandableHeightListView) findViewById(R.id.profile_showcase_not_social_listview);
+        mNotSocialFieldsLayout = (RelativeLayout) findViewById(R.id.profile_showcase_not_social_layout);
+        mNonSocialFields = new ArrayList<>();
+
+        mSocialFieldsListView = (ExpandableHeightListView) findViewById(R.id.profile_showcase_social_listview);
+        mSocialFieldsLayout = (RelativeLayout) findViewById(R.id.profile_showcase_social_layout);
+        mSocialFields = new ArrayList<>();
+
+        mContactAdder = new ContactAdder(getApplicationContext());
+    }
+
+    public void handleAddContactLayout() {
+        RelativeLayout contactAddLayout = (RelativeLayout) findViewById(R.id.profile_showcase_contact_add_layout);
+        contactAddLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.profile_showcase_contact_add_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContactAdder.add(completeName, cellphoneNumber, emailAddr);
+            }
+        });
+    }
+
+    public void setData() {
+        Intent intent = getIntent();
+        boolean displayNonSocialPart = false;
+        boolean displaySocialPart = false;
+
+        SelfProfile profile = (SelfProfile) intent.getSerializableExtra(EXTRA_KEY_PROFILE);
+        //hasToDbCreate = intent.getBooleanExtra(YokiGlobals.Keys.INTENT_USERDATA_NEW, false);
+
+        completeName = profile.getFirstname() + " " + profile.getLastname();
+
+        TextView nameTextView = (TextView) findViewById(R.id.profile_showcase_header_name);
+        nameTextView.setText(completeName);
+
+        for (ProfileField field : profile.getFields()) {
+
+            String fieldName = field.getName();
+            String fieldTextValue = field.getTextValue();
+            String fieldSocialId = field.getSocialId();
+            Boolean sharedStatus = field.getSharedStatus();
+
+            ProfileFieldType fieldType = ProfileFieldType.fromString(fieldName);
+            AProfileDataField newField = AProfileDataField.getInstance(fieldType, fieldTextValue, fieldSocialId, sharedStatus);
+            ProfileEntityType entityType = newField.getFieldEntityType();
+
+            if (fieldType == ProfileFieldType.CELLPHONE) {
+                cellphoneNumber = newField.getValue();
+            }
+
+            if (fieldType == ProfileFieldType.EMAIL) {
+                emailAddr = newField.getValue();
+            }
+
+            if (entityType == ProfileEntityType.DATA) {
+                mNonSocialFields.add(newField);
+                displayNonSocialPart = true;
+            }
+            else {
+                mSocialFields.add(newField);
+                displaySocialPart = true;
+            }
+        }
+
+        if (displayNonSocialPart) {
+
+            mNotSocialFieldsLayout.setVisibility(View.VISIBLE);
+            NonSocialProfileFieldAdapter adapter = new NonSocialProfileFieldAdapter(this, 0, mNonSocialFields);
+            mNonSocialFieldsListView.setAdapter(adapter);
+            mNonSocialFieldsListView.setExpanded(true);
+            handleAddContactLayout();
+        }
+
+        if (displaySocialPart) {
+            mSocialFieldsLayout.setVisibility(View.VISIBLE);
+            SocialProfileFieldAdapter adapter = new SocialProfileFieldAdapter(this, this, 0, mSocialFields);
+            mSocialFieldsListView.setAdapter(adapter);
+            mSocialFieldsListView.setExpanded(true);
+        }
+    }
+
+    private void storeBeamedProfileToDatabase(){
+
+//        if (target == null){
+//            return ;
+//        }
+//
+//        SharedProfilesDB db = YokiGlobals.sharedProfilesDB;
+//
+//        Gson gson = new Gson();
+//        String userAsJsonString = gson.toJson(target);
+//
+//        YokiUser yokiUser = new YokiUser(target.getUserid(), userAsJsonString);
+//
+//        db.openForWrite();
+//        db.insertUser(yokiUser);
+//        db.close();
+//
+//        YokiGlobals.sharedValues.addRecentlyBeamedUser(target);
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_displayer);
+
+        init();
+        setData();
+
+        if (hasToDbCreate) {
+            storeBeamedProfileToDatabase();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile_displayer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_ok:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //LISessionManager.getInstance(getApplicationContext()).onActivityResult(this, requestCode, resultCode, data);
+    }
+}

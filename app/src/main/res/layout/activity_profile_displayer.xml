@@ -1,0 +1,126 @@
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollView"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:padding="5sp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="117dp"
+            android:background="@color/primary"
+            android:id="@+id/profile_page_header"
+            android:elevation="2dp"
+            android:layout_centerHorizontal="true">
+
+            <com.pkmmte.view.CircularImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/profile_showcase_header_pic"
+                android:src="@drawable/profile_pic_unknow"
+                app:border="true"
+                app:border_color="#EEEEEE"
+                app:border_width="4dp"
+                app:shadow="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#262626"
+                android:id="@+id/profile_showcase_header_name"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="7dp"
+                android:textSize="30dp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/profile_showcase_not_social_layout"
+            android:visibility="gone"
+            android:layout_marginTop="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/profile_showcase_not_social_title"
+                android:layout_marginBottom="10sp"
+                android:background="@color/primary"
+                android:padding="9sp"
+                android:textColor="#ffffff"
+                android:textSize="19dp"
+                android:text="@string/profile_showcase_banner_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView
+                android:id="@+id/profile_showcase_not_social_listview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_showcase_not_social_title"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true">
+            </com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="5sp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:id="@+id/profile_showcase_contact_add_layout"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <Button
+                android:text="@string/showcase_import_to_contacts"
+                android:id="@+id/profile_showcase_contact_add_button"
+                android:layout_width="300dp"
+                android:layout_height="50dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/profile_showcase_social_layout"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/profile_showcase_social_title"
+                android:background="@color/primary"
+                android:padding="9sp"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="10sp"
+                android:textSize="19dp"
+                android:text="@string/profile_showcase_banner_social"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView
+                android:id="@+id/profile_showcase_social_listview"
+                android:layout_below="@+id/profile_showcase_social_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            </com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView>
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

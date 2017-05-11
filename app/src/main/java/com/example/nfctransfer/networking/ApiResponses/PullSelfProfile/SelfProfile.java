@@ -1,8 +1,9 @@
 package com.example.nfctransfer.networking.ApiResponses.PullSelfProfile;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SelfProfile {
+public class SelfProfile implements Serializable {
 
     private String _id;
     private String firstname;

@@ -10,6 +10,7 @@
     <color name="login_background_secondary_color">#3498db</color>
     <color name="edittext_hint_color">#92dedede</color>
     <color name="progress_layout_background">#626e6e6e</color>
+    <color name="second_subtext">#ff6e6e6e</color>
 
 </resources>
 

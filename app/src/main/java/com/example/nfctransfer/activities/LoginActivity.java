@@ -277,9 +277,6 @@ public class LoginActivity extends AppCompatActivity {
         _firstName = (EditText) findViewById(R.id.firstname_input);
         _lastName = (EditText) findViewById(R.id.lastname_input);
 
-        // REMOVE
-        _phoneInput.setNumber("14243847402");
-
         _connectButton = (Button) findViewById(R.id.button_connection);
         _registerButton = (Button) findViewById(R.id.button_register);
         _cancelRegisterButton = (Button) findViewById(R.id.button_cancel_register);

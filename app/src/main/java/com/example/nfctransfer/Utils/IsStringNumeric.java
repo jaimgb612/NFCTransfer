@@ -1,4 +1,4 @@
-package com.example.nfctransfer.Utils;
+package com.example.nfctransfer.utils;
 
 public class IsStringNumeric {
 

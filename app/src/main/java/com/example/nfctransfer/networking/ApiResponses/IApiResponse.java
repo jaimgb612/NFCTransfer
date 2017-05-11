@@ -1,4 +1,6 @@
 package com.example.nfctransfer.networking.ApiResponses;
 
-public interface IApiResponse {
+import java.io.Serializable;
+
+public interface IApiResponse extends Serializable {
 }

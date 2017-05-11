@@ -23,7 +23,7 @@ public class NfcTransferApi {
 
     private NfcTransferApi() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
+                .baseUrl("https://francoisseminerio.me")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

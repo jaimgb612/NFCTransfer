@@ -21,8 +21,14 @@ public class FacebookAPI extends ASocialAPI {
     private ProfileTracker mProfileTracker;
     private Profile fbProfile = null;
 
-    public FacebookAPI() {
+    private FacebookAPI() {
         super(API_NAME);
+    }
+
+    private static FacebookAPI INSTANCE = new FacebookAPI();
+
+    public static FacebookAPI getInstance()
+    {	return INSTANCE;
     }
 
     @Override
@@ -104,5 +110,9 @@ public class FacebookAPI extends ASocialAPI {
 
     public void setFacebookCallbackManager(CallbackManager _callbackManager){
         this.callbackManager = _callbackManager;
+    }
+
+    public CallbackManager getFacebookCallbackManager() {
+        return this.callbackManager;
     }
 }

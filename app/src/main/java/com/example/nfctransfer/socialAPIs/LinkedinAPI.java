@@ -13,8 +13,14 @@ public class LinkedinAPI extends ASocialAPI {
     private static final String ACCESS_TOKEN_VALUE = "accessTokenValue";
     private static final String ACCESS_TOKEN_EXPIRATION_VALUE = "expiresOn";
 
-    public LinkedinAPI(){
+    private LinkedinAPI(){
         super(API_NAME);
+    }
+
+    private static LinkedinAPI INSTANCE = new LinkedinAPI();
+
+    public static LinkedinAPI getInstance()
+    {	return INSTANCE;
     }
 
     @Override
@@ -26,6 +32,7 @@ public class LinkedinAPI extends ASocialAPI {
         }
         return true;
     }
+
 
     private void authenticateWithoutAccessToken(final Context context, final Activity activity, final ApiSyncCallBack callBack) {
 //        LISessionManager.getInstance(context).init(activity, buildLinkedinScope(), new AuthListener() {
@@ -121,38 +128,38 @@ public class LinkedinAPI extends ASocialAPI {
         */
     }
 
-    @Override
-    public void clearSavedApiData(Context context) {
-        super.clearSavedApiData(context);
-    }
-
-    @Override
-    public void saveGeneratedAccessToken(Context context, String authToken) {
-        super.saveGeneratedAccessToken(context, authToken);
-    }
-
-    @Override
-    public String getGeneratedAccessToken(Context context) {
-        return (super.getGeneratedAccessToken(context));
-    }
-
-    public void saveGeneratedAccessTokenExpiration(Context context, Long authTokenExpiration) {
-        super.saveGeneratedAccessTokenExpiration(context, authTokenExpiration);
-    }
-
-    public Long getGeneratedAccessTokenExpiration(Context context) {
-        return (super.getGeneratedAccessTokenExpiration(context));
-    }
-
-    @Override
-    public void saveAuthenticationStatus(Context context, boolean status) {
-        super.saveAuthenticationStatus(context, status);
-    }
-
-    @Override
-    public boolean getAuthenticationStatus(Context context) {
-        return (super.getAuthenticationStatus(context));
-    }
+//    @Override
+//    public void clearSavedApiData(Context context) {
+//        super.clearSavedApiData(context);
+//    }
+//
+//    @Override
+//    public void saveGeneratedAccessToken(Context context, String authToken) {
+//        super.saveGeneratedAccessToken(context, authToken);
+//    }
+//
+//    @Override
+//    public String getGeneratedAccessToken(Context context) {
+//        return (super.getGeneratedAccessToken(context));
+//    }
+//
+//    public void saveGeneratedAccessTokenExpiration(Context context, Long authTokenExpiration) {
+//        super.saveGeneratedAccessTokenExpiration(context, authTokenExpiration);
+//    }
+//
+//    public Long getGeneratedAccessTokenExpiration(Context context) {
+//        return (super.getGeneratedAccessTokenExpiration(context));
+//    }
+//
+//    @Override
+//    public void saveAuthenticationStatus(Context context, boolean status) {
+//        super.saveAuthenticationStatus(context, status);
+//    }
+//
+//    @Override
+//    public boolean getAuthenticationStatus(Context context) {
+//        return (super.getAuthenticationStatus(context));
+//    }
 
 //    private static Scope buildLinkedinScope() {
 //        return Scope.build(Scope.R_BASICPROFILE, Scope.W_SHARE);

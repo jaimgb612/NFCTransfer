@@ -1,4 +1,4 @@
-package com.example.nfctransfer.Utils;
+package com.example.nfctransfer.utils;
 
 import android.content.Context;
 

@@ -43,29 +43,29 @@ public abstract class ASocialAPI {
         editor.apply();
     }
 
-    public void saveGeneratedAccessToken(Context context, String authToken) {
-        getSharedPreferences(context).edit().putString(API_ACCESS_TOKEN, authToken).apply();
-    }
-
-    public String getGeneratedAccessToken(Context context) {
-        return (getSharedPreferences(context).getString(API_ACCESS_TOKEN, null));
-    }
-
-    public void saveGeneratedAccessTokenExpiration(Context context, Long authTokenExpiration) {
-        getSharedPreferences(context).edit().putLong(API_ACCESS_TOKEN_EXPIRATION, authTokenExpiration).apply();
-    }
-
-    public Long getGeneratedAccessTokenExpiration(Context context) {
-        return (getSharedPreferences(context).getLong(API_ACCESS_TOKEN_EXPIRATION, 0));
-    }
-
-    public void saveAuthenticationStatus(Context context, boolean status) {
-        getSharedPreferences(context).edit().putBoolean(API_AUTHENTICATION_STATUS, status).apply();
-    }
-
-    public boolean getAuthenticationStatus(Context context) {
-        return (getSharedPreferences(context).getBoolean(API_AUTHENTICATION_STATUS, false));
-    }
+//    public void saveGeneratedAccessToken(Context context, String authToken) {
+//        getSharedPreferences(context).edit().putString(API_ACCESS_TOKEN, authToken).apply();
+//    }
+//
+//    public String getGeneratedAccessToken(Context context) {
+//        return (getSharedPreferences(context).getString(API_ACCESS_TOKEN, null));
+//    }
+//
+//    public void saveGeneratedAccessTokenExpiration(Context context, Long authTokenExpiration) {
+//        getSharedPreferences(context).edit().putLong(API_ACCESS_TOKEN_EXPIRATION, authTokenExpiration).apply();
+//    }
+//
+//    public Long getGeneratedAccessTokenExpiration(Context context) {
+//        return (getSharedPreferences(context).getLong(API_ACCESS_TOKEN_EXPIRATION, 0));
+//    }
+//
+//    public void saveAuthenticationStatus(Context context, boolean status) {
+//        getSharedPreferences(context).edit().putBoolean(API_AUTHENTICATION_STATUS, status).apply();
+//    }
+//
+//    public boolean getAuthenticationStatus(Context context) {
+//        return (getSharedPreferences(context).getBoolean(API_AUTHENTICATION_STATUS, false));
+//    }
 
     public abstract boolean isApplicationInstalled(Context context);
     public abstract void synchronizeWithSocialApi(Context context, Activity activity, ApiSyncCallBack callBack);

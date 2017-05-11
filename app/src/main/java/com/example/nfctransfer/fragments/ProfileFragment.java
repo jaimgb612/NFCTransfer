@@ -18,7 +18,6 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -28,8 +27,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nfctransfer.R;
-import com.example.nfctransfer.Utils.AlertDialogTools;
-import com.example.nfctransfer.Utils.FieldEntryParser;
+import com.example.nfctransfer.activities.ProfileDisplayer;
+import com.example.nfctransfer.utils.AlertDialogTools;
+import com.example.nfctransfer.utils.FieldEntryParser;
 import com.example.nfctransfer.activities.AddFieldActivity;
 import com.example.nfctransfer.activities.MainActivity;
 import com.example.nfctransfer.adapters.ProfileDataViewAdapter;
@@ -49,7 +49,7 @@ import com.example.nfctransfer.socialAPIs.FacebookAPI;
 import com.example.nfctransfer.socialAPIs.LinkedinAPI;
 import com.example.nfctransfer.socialAPIs.SynchronizableElement;
 import com.example.nfctransfer.socialAPIs.TwitterAPI;
-import com.example.nfctransfer.views.VerticalViewPager;
+import com.example.nfctransfer.websockets.SocketConnectionWatcher;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements SocketConnectionWatcher {
 
     public final static int CONTEXT_MENU_ITEM_DELETE = 0;
     public final static int CONTEXT_MENU_ITEM_EDIT = 1;
@@ -78,10 +78,6 @@ public class ProfileFragment extends Fragment {
 
     private List<ProfileFieldType> allFields = new ArrayList<>();
     private List<AProfileDataField> profileFields = new ArrayList<>();
-
-    public static LinkedinAPI linkedinAPI = new LinkedinAPI();
-    public static TwitterAPI twitterAPI = new TwitterAPI();
-    public static FacebookAPI facebookAPI = new FacebookAPI();
 
     private enum ApiTaskType {
         CREATE,
@@ -218,6 +214,30 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
 
+    private void showSocialFieldSyncRequireAppInstall(ProfileFieldType fieldType) {
+        Resources resources = getResources();
+        String errMsg;
+
+        switch (fieldType) {
+            case TWITTER:
+                errMsg = resources.getString(R.string.err_twitter_not_installed);
+                break;
+            default:
+                errMsg = null;
+                break;
+        }
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        alertDialogBuilder.setTitle(R.string.oops);
+        alertDialogBuilder
+                .setMessage(errMsg)
+                .setPositiveButton(R.string.OK, null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     private void rollbackOnRequestFail(AProfileDataField field, ApiTaskType taskType, int position) {
 
         switch (taskType) {
@@ -256,7 +276,6 @@ public class ProfileFragment extends Fragment {
 
         Intent openAddFieldActivity = new Intent(activity, AddFieldActivity.class);
         openAddFieldActivity.putExtra(MainActivity.KEY_PASS_FIELDS_TO_ADD, (Serializable) fieldsAvailable);
-
         startActivityForResult(openAddFieldActivity, INTENT_CHOSEN_FIELD_KEY);
     }
 
@@ -305,6 +324,18 @@ public class ProfileFragment extends Fragment {
             mAdapter.addField(newField);
         }
         onItemsLoadComplete();
+    }
+
+    private void addSocialField(ProfileFieldType fieldType, SynchronizableElement se) {
+
+        String textValue = se.getCompleteIdentity();
+        String socialId = se.getUserId();
+
+        AProfileDataField field = AProfileDataField.getInstance(fieldType, textValue, socialId, true);
+
+        mAdapter.addField(field);
+
+        requestAddField(field, profileFields.size() - 1);
     }
 
     private void onAddField(ProfileFieldType fieldType) {
@@ -502,17 +533,17 @@ public class ProfileFragment extends Fragment {
 
     private void synchronizeWithFacebookApi() {
 
-        facebookAPI.synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+        FacebookAPI.getInstance().synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
             @Override
             public void synchronizationResult(boolean status) {
                 if (status) {
-                    facebookAPI.getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                    FacebookAPI.getInstance().getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
                         @Override
                         public void onProfileSynchronized(SynchronizableElement element) {
                             if (element == null) {
                                 showSocialFieldSyncFailDialog(ProfileFieldType.FACEBOOK);
                             } else {
-                                //addNewSynchronizedFieldToListView(ProfileFieldType.FACEBOOK, element);
+                                addSocialField(ProfileFieldType.FACEBOOK, element);
                             }
                         }
                     });
@@ -525,23 +556,24 @@ public class ProfileFragment extends Fragment {
 
     private void synchronizeWithTwitterApi() {
 
-        twitterAPI.synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+        TwitterAPI.getInstance().synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
             @Override
             public void synchronizationResult(boolean status) {
                 if (status) {
-                    twitterAPI.getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                    TwitterAPI.getInstance().getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
                         @Override
                         public void onProfileSynchronized(SynchronizableElement element) {
                             if (element == null) {
                                 showSocialFieldSyncFailDialog(ProfileFieldType.TWITTER);
                             } else {
-                                //addNewSynchronizedFieldToListView(ProfileFieldType.TWITTER, element);
+                                addSocialField(ProfileFieldType.TWITTER, element);
                             }
                         }
                     });
-                } else {
-                    if (twitterAPI.isApplicationInstalled(context)) {
-                        //showSocialFieldSyncRequireAppInstall(ProfileFieldType.TWITTER);
+                }
+                else {
+                    if (!TwitterAPI.getInstance().isApplicationInstalled(context)) {
+                        showSocialFieldSyncRequireAppInstall(ProfileFieldType.TWITTER);
                     }
                     else {
                         showSocialFieldSyncFailDialog(ProfileFieldType.TWITTER);
@@ -553,17 +585,17 @@ public class ProfileFragment extends Fragment {
 
     private void synchronizeWithLinkedinApi() {
 
-        linkedinAPI.synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+        LinkedinAPI.getInstance().synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
             @Override
             public void synchronizationResult(boolean status) {
                 if (status) {
-                    linkedinAPI.getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                    LinkedinAPI.getInstance().getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
                         @Override
                         public void onProfileSynchronized(SynchronizableElement element) {
                             if (element == null) {
                                 showSocialFieldSyncFailDialog(ProfileFieldType.LINKEDIN);
                             } else {
-                                //addNewSynchronizedFieldToListView(ProfileFieldType.LINKEDIN, element);
+                                addSocialField(ProfileFieldType.LINKEDIN, element);
                             }
                         }
                     });
@@ -572,6 +604,16 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onSocketConnected() {
+
+    }
+
+    @Override
+    public void onSocketDisconnected() {
+
     }
 
     @Override

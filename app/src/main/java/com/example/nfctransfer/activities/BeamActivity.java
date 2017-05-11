@@ -2,9 +2,11 @@ package com.example.nfctransfer.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,7 @@ public class BeamActivity extends NfcBeamWriterActivity {
     private ProgressBar progressBar;
     private String targetRegId;
 
+
     public void activateProgressBar(final boolean refreshing) {
         if (refreshing) {
             progressBar.setVisibility(View.VISIBLE);
@@ -52,10 +55,7 @@ public class BeamActivity extends NfcBeamWriterActivity {
             }
         });
     }
-
-    public void onGcmReplyFail(final String targetRegId){
-    }
-
+    
     public void onReceivedTagCorrupted(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -97,6 +97,10 @@ public class BeamActivity extends NfcBeamWriterActivity {
 //                onRetrieveUserDataFail(targetUserId);
 //            }
 //        });
+
+        Intent intent = new Intent(context, ProfileDisplayer.class);
+        intent.putExtra("PROFILE", profile);
+        startActivity(intent);
     }
 
     private void goToProfileShowCase(String userData) {
@@ -229,4 +233,11 @@ public class BeamActivity extends NfcBeamWriterActivity {
 
     @Override
     protected void onTagLost() {}
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+        retrieveTargetData("");
+    }
 }

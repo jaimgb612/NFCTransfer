@@ -15,9 +15,15 @@ public class TwitterAPI extends ASocialAPI {
     private static final String API_NAME = "twitter";
     private TwitterAuthClient twitterAuthClient;
 
-    public TwitterAPI() {
+    private TwitterAPI() {
         super(API_NAME);
         twitterAuthClient = new TwitterAuthClient();
+    }
+
+    private static TwitterAPI INSTANCE = new TwitterAPI();
+
+    public static TwitterAPI getInstance()
+    {	return INSTANCE;
     }
 
     @Override

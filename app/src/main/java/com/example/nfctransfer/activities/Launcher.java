@@ -8,6 +8,9 @@ import android.os.Bundle;
 import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
 import com.example.nfctransfer.sharedPreferences.Preferences;
+import com.example.nfctransfer.socialAPIs.FacebookAPI;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.Fabric;
@@ -18,7 +21,7 @@ public class Launcher extends Activity {
     private static final String TWITTER_SECRET = "YY72XRSNnnUmMobwTExCnylqBicuDoUNahqVADLI7NV1ljPisb";
 
     public void init(){
-        //FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         NfcTransferApi.getInstance();

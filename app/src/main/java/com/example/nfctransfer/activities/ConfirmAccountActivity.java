@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.nfctransfer.R;
-import com.example.nfctransfer.Utils.IsStringNumeric;
+import com.example.nfctransfer.utils.IsStringNumeric;
 import com.example.nfctransfer.networking.ApiResponses.AuthResponse;
 import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 import com.example.nfctransfer.networking.HttpCodes;
@@ -25,10 +25,6 @@ import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
 import com.example.nfctransfer.sharedPreferences.Preferences;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
