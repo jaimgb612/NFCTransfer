@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 Profile profile = result.getUser();
                 Intent intent = new Intent(mContext, ProfileDisplayer.class);
                 intent.putExtra(ProfileDisplayer.EXTRA_KEY_PROFILE, profile);
+                intent.putExtra(ProfileDisplayer.EXTRA_KEY_INSERT_IN_DATABASE, true);
                 startActivity(intent);
             }
 

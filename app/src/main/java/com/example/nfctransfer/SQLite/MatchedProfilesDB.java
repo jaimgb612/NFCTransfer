@@ -17,7 +17,7 @@ public class MatchedProfilesDB {
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "nfctransfer";
-    private static final String TABLE_SHARED_USERS = "table_matched_profile";
+    private static final String TABLE_SHARED_USERS = "table_matched_profiles";
     private static final String COL_ID = "ID";
     private static final int NUM_COL_ID = 0;
     private static final String COL_USER_ID = "USER_ID";

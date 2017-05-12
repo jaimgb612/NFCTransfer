@@ -36,7 +36,7 @@ public class MatchListFragments extends Fragment {
         listVisible = false;
         profiles = new ArrayList<>();
         sharedFragmentNoShared = (TextView) getActivity().findViewById(R.id.shared_fragment_no_shared);
-        listView = (ListView) getActivity().findViewById(R.id.sharedListView);
+        listView = (ListView) getActivity().findViewById(R.id.match_listview);
         listAdapter = new MatchedProfilesAdapter(getActivity(), 0, profiles);
         listView.setAdapter(listAdapter);
         //setOnRecentlyBeamedUserCallback();
@@ -78,35 +78,6 @@ public class MatchListFragments extends Fragment {
         }
     }
 
-//    private void setOnRecentlyBeamedUserCallback(){
-//        YokiGlobals.sharedValues.registerBeamUserWatcher(new BeamedUserWatcher() {
-//            @Override
-//            public void onNewUserBeamed() {
-//                String userId;
-//
-//                List<UserData> newBeamed = YokiGlobals.sharedValues.getRecentlyBeamedUsers();
-//
-//                for (UserData user : newBeamed) {
-//                    userId = user.getUserid();
-//                    int i;
-//                    for (i = 0; i != sharedUserDatas.size(); i++) {
-//                        if (userId.equals(sharedUserDatas.get(i).getUserid())) {
-//                            sharedUserDatas.set(i, user);
-//                            break;
-//                        }
-//                    }
-//                    if (i == sharedUserDatas.size()) {
-//                        sharedUserDatas.add(user);
-//                    }
-//                }
-//
-//                YokiGlobals.sharedValues.clearRecentlyBeamedUsers();
-//                updateListView();
-//            }
-//        });
-//    }
-
-
     private void removeSharedUser(Profile profile){
         db.openForWrite();
         db.removeUserWithUserId(profile.getId());
@@ -145,10 +116,10 @@ public class MatchListFragments extends Fragment {
 
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_action_share, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_match_list_fragments, container, false);
     }
 
     @Override

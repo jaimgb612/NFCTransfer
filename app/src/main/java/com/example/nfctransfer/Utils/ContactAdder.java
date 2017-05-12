@@ -65,6 +65,7 @@ public class ContactAdder {
         try {
             context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
         } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(context, "Cannot add the contact to the cellphone.", Toast.LENGTH_SHORT).show();
             return;
         }
