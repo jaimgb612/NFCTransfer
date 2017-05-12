@@ -22,6 +22,10 @@ import com.example.nfctransfer.R;
 import com.example.nfctransfer.fragments.ActionShareFragment;
 import com.example.nfctransfer.fragments.MatchListFragments;
 import com.example.nfctransfer.fragments.ProfileFragment;
+import com.example.nfctransfer.networking.ApiResponses.Profile.Profile;
+import com.example.nfctransfer.networking.ApiResponses.Profile.PullProfileResponse;
+import com.example.nfctransfer.networking.HttpCodes;
+import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
 import com.example.nfctransfer.sharedPreferences.Preferences;
 import com.example.nfctransfer.socialAPIs.FacebookAPI;
@@ -40,6 +44,9 @@ import org.json.JSONObject;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -126,6 +133,34 @@ public class MainActivity extends AppCompatActivity {
         mSmartTabLayout.setViewPager(viewPager);
     }
 
+    private void retrieveTargetDataWhenBeamed(final String targetUserId){
+
+        Call<PullProfileResponse> call;
+
+        call = NfcTransferApi.getInstance().getTargetProfileData(Session.accessToken, targetUserId);
+        call.enqueue(new Callback<PullProfileResponse>() {
+            @Override
+            public void onResponse(Call<PullProfileResponse> call, Response<PullProfileResponse> response) {
+                int code = response.code();
+                PullProfileResponse result;
+
+                if (code != HttpCodes.OK) {
+                    return;
+                }
+                result = response.body();
+                Profile profile = result.getUser();
+                Intent intent = new Intent(mContext, ProfileDisplayer.class);
+                intent.putExtra(ProfileDisplayer.EXTRA_KEY_PROFILE, profile);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<PullProfileResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     private void onLogOut() {
         Preferences.getInstance().deleteSavedCredentials(this);
         Intent intent = new Intent(this, LoginActivity.class);
@@ -174,10 +209,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mSocket.on("user_got_beamed", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject reply = (JSONObject) args[0];
+                String targetId;
+
+                try {
+                    if ((targetId = reply.getString("user_id")) != null) {
+                        retrieveTargetDataWhenBeamed(targetId);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         mSocket.on("authenticated", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.e(SOCKET_TAG, "Authenticated !");
                 SocketConnectionManager.getInstance().setSocket(mSocket);
                 SocketConnectionManager.getInstance().notifySocketConnected();
             }
@@ -193,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.e(SOCKET_TAG, "Disconnected");
                 SocketConnectionManager.getInstance().notifySocketDisonnected();
             }
         });
@@ -201,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean connectSocket() {
         try {
-            mSocket = IO.socket("");
+            mSocket = IO.socket("https://francoisseminerio.me");
             mSocket.connect();
         } catch (Exception e) {
             e.printStackTrace();

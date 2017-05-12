@@ -86,5 +86,11 @@ public interface NfcTransferService {
     @DELETE("/api/profile/field/{field_name}")
     Call<SimpleResponse> deleteProfileField(@Path(PATH_FIELD_NAME) String fieldName,
                                             @Query(INDEX_ACCESS_TOKEN) String accessToken);
+
+    // NOTIFY BEAMED USER
+    @FormUrlEncoded
+    @POST("/api/notify/beam")
+    Call<SimpleResponse> notifyBeamedUser(@Field(INDEX_TARGETID) String targetId,
+                                          @Field(INDEX_ACCESS_TOKEN) String accessToken);
 }
 

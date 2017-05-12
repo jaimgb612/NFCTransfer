@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +19,7 @@ import com.example.nfctransfer.ndeftools.MimeRecord;
 import com.example.nfctransfer.ndeftools.util.activity.NfcBeamWriterActivity;
 import com.example.nfctransfer.networking.ApiResponses.Profile.Profile;
 import com.example.nfctransfer.networking.ApiResponses.Profile.PullProfileResponse;
+import com.example.nfctransfer.networking.ApiResponses.SimpleResponse;
 import com.example.nfctransfer.networking.HttpCodes;
 import com.example.nfctransfer.networking.NfcTransferApi;
 import com.example.nfctransfer.networking.Session;
@@ -76,6 +76,7 @@ public class BeamActivity extends NfcBeamWriterActivity {
     private void displayTargetProfile(Profile profile) {
         Intent intent = new Intent(context, ProfileDisplayer.class);
         intent.putExtra(ProfileDisplayer.EXTRA_KEY_PROFILE, profile);
+        intent.putExtra(ProfileDisplayer.EXTRA_KEY_INSERT_IN_DATABASE, true);
         startActivity(intent);
         finish();
     }
@@ -108,29 +109,18 @@ public class BeamActivity extends NfcBeamWriterActivity {
         });
     }
 
-    private void notififyBeamedUser(final String targetRegId){
+    private void notifyBeamedUser(final String targetId){
 
-//        Call<ApiBasicResponse> call;
-//
-//        call = apiActions.replyToBeamWithGcm(targetRegId);
-//        call.enqueue(new Callback<ApiBasicResponse>() {
-//            @Override
-//            public void onResponse(Response<ApiBasicResponse> response, Retrofit retrofit) {
-//                Integer statusCode = response.code();
-//
-//                if (statusCode == ApiStatusCode.HTTP_FORBIDDEN) {
-//                    startActivity(new Intent(context, UserLoginActivity.class));
-//                    finish();
-//                } else if (statusCode != ApiStatusCode.HTTP_OK) {
-//                    onGcmReplyFail(targetRegId);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                onGcmReplyFail(targetRegId);
-//            }
-//        });
+        Call<SimpleResponse> call;
+
+        call = NfcTransferApi.getInstance().notifyBeamedUser(Session.accessToken, targetId);
+        call.enqueue(new Callback<SimpleResponse>() {
+            @Override
+            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {}
+
+            @Override
+            public void onFailure(Call<SimpleResponse> call, Throwable t) {}
+        });
     }
 
     private void init(){
@@ -183,7 +173,7 @@ public class BeamActivity extends NfcBeamWriterActivity {
             return;
         }
         targetId = new String(message.get(1).getNdefRecord().getPayload());
-        notififyBeamedUser(targetId);
+        notifyBeamedUser(targetId);
         retrieveTargetData(targetId);
     }
 

@@ -16,6 +16,7 @@
     <string name="login_register_invalid_cellphone">n error occured while creating your account. It seems that the cellphone
     number you provided is incorrect.</string>
     <string name="login_error">An error ocurred while signin-in. Please check your network connection and retry.</string>
+    <string name="profile_row_menu_title">Choose an option</string>
     <string name="item_image_contentDescription">Country flag</string>
     <string name="item_preview_country">United States</string>
     <string name="item_preview_dialCode">+424</string>

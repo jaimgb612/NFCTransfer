@@ -80,4 +80,8 @@ public class NfcTransferApi {
     public Call<SimpleResponse> deleteProfileField(String accessToken, String fieldName) {
         return (service.deleteProfileField(fieldName, accessToken));
     }
+
+    public Call<SimpleResponse> notifyBeamedUser(String accessToken, String targetId) {
+        return (service.notifyBeamedUser(targetId, accessToken));
+    }
 }

@@ -17,8 +17,11 @@ import com.example.nfctransfer.data.enumerations.ProfileEntityType;
 import com.example.nfctransfer.data.enumerations.ProfileFieldType;
 import com.example.nfctransfer.networking.ApiResponses.Profile.ProfileField;
 import com.example.nfctransfer.networking.ApiResponses.Profile.Profile;
+import com.example.nfctransfer.sqLite.DbUserModel;
+import com.example.nfctransfer.sqLite.MatchedProfilesDB;
 import com.example.nfctransfer.utils.ContactAdder;
 import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
 public class ProfileDisplayer extends AppCompatActivity {
 
     public static final String EXTRA_KEY_PROFILE = "extra_key_profile";
+    public final static String EXTRA_KEY_INSERT_IN_DATABASE = "extra_key_insert_database";
 
     private ExpandableHeightListView mSocialFieldsListView;
     private ExpandableHeightListView mNonSocialFieldsListView;
@@ -120,28 +124,25 @@ public class ProfileDisplayer extends AppCompatActivity {
             mSocialFieldsListView.setAdapter(adapter);
             mSocialFieldsListView.setExpanded(true);
         }
+
+        boolean hasToDbCreate = intent.getBooleanExtra(ProfileDisplayer.EXTRA_KEY_INSERT_IN_DATABASE, false);
+
+        if (hasToDbCreate) {
+            storeBeamedProfileToDatabase(profile);
+        }
     }
 
-    private void storeBeamedProfileToDatabase(){
+    private void storeBeamedProfileToDatabase(Profile profile){
 
-//        if (target == null){
-//            return ;
-//        }
-//
-//        SharedProfilesDB db = YokiGlobals.sharedProfilesDB;
-//
-//        Gson gson = new Gson();
-//        String userAsJsonString = gson.toJson(target);
-//
-//        YokiUser yokiUser = new YokiUser(target.getUserid(), userAsJsonString);
-//
-//        db.openForWrite();
-//        db.insertUser(yokiUser);
-//        db.close();
-//
-//        YokiGlobals.sharedValues.addRecentlyBeamedUser(target);
+        MatchedProfilesDB db = new MatchedProfilesDB(this);
+
+        Gson gson = new Gson();
+        DbUserModel model = new DbUserModel(profile.getId(), gson.toJson(profile));
+
+        db.openForWrite();
+        db.insertUser(model);
+        db.close();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,10 +151,6 @@ public class ProfileDisplayer extends AppCompatActivity {
 
         init();
         setData();
-
-        if (hasToDbCreate) {
-            storeBeamedProfileToDatabase();
-        }
     }
 
     @Override

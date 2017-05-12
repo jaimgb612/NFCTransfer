@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nfctransfer.R;
+import com.example.nfctransfer.activities.LoginActivity;
+import com.example.nfctransfer.sharedPreferences.Preferences;
 import com.example.nfctransfer.utils.AlertDialogTools;
 import com.example.nfctransfer.utils.FieldEntryParser;
 import com.example.nfctransfer.activities.AddFieldActivity;
@@ -65,8 +67,8 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
     public final static int INTENT_CHOSEN_FIELD_KEY = 1;
     public final static String INTENT_EXTRA_CHOSEN_FIELD_KEY = "extra_chosen_field_key";
 
-    private Context context;
-    private Activity activity;
+    private Context mContext;
+    private Activity mActivity;
 
     private ProfileDataViewAdapter mAdapter;
     private RecyclerView mProfileView;
@@ -95,16 +97,16 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
 
     private void initComponents() {
 
-        activity = getActivity();
-        context = activity.getApplicationContext();
+        mActivity = getActivity();
+        mContext = mActivity.getApplicationContext();
 
         buildFieldsModel();
 
-        mFieldEntryParser = new FieldEntryParser(context);
+        mFieldEntryParser = new FieldEntryParser(mContext);
 
-        mProfileView = (RecyclerView) activity.findViewById(R.id.profile_data_view);
+        mProfileView = (RecyclerView) mActivity.findViewById(R.id.profile_data_view);
         mProfileView.setNestedScrollingEnabled(false);
-        mButtonAddField = (FloatingActionButton) activity.findViewById(R.id.button_add_field);
+        mButtonAddField = (FloatingActionButton) mActivity.findViewById(R.id.button_add_field);
 
         mButtonAddField.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +116,7 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
         });
         mButtonAddField.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2980b9")));
 
-        mAdapter = new ProfileDataViewAdapter(context, profileFields);
+        mAdapter = new ProfileDataViewAdapter(mContext, profileFields);
 
         mAdapter.setCreateMenuListener(new View.OnCreateContextMenuListener() {
             @Override
@@ -135,13 +137,13 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
             }
         });
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
         mProfileView.setLayoutManager(mLayoutManager);
 
         mProfileView.setAdapter(mAdapter);
 
-        mRefreshLayout = (SwipeRefreshLayout) activity.findViewById(R.id.swipe_refresh);
+        mRefreshLayout = (SwipeRefreshLayout) mActivity.findViewById(R.id.swipe_refresh);
 
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -159,7 +161,7 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
             }
         });
 
-        mUserNameTitle = (TextView ) activity.findViewById(R.id.user_profile_name);
+        mUserNameTitle = (TextView ) mActivity.findViewById(R.id.user_profile_name);
 
         registerForContextMenu(mProfileView);
     }
@@ -280,7 +282,7 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
             fieldsAvailable.remove(field.getFieldType());
         }
 
-        Intent openAddFieldActivity = new Intent(activity, AddFieldActivity.class);
+        Intent openAddFieldActivity = new Intent(mActivity, AddFieldActivity.class);
         openAddFieldActivity.putExtra(MainActivity.KEY_PASS_FIELDS_TO_ADD, (Serializable) fieldsAvailable);
         startActivityForResult(openAddFieldActivity, INTENT_CHOSEN_FIELD_KEY);
     }
@@ -423,6 +425,10 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
                 int code = response.code();
 
                 if (code != HttpCodes.CREATED) {
+                    if (code == HttpCodes.FORBIDDEN) {
+                        onLogOut();
+                        return;
+                    }
                     rollbackOnRequestFail(field, ApiTaskType.CREATE, insertedAtPosition);
                 }
             }
@@ -496,6 +502,10 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
                 int code = response.code();
 
                 if (code != HttpCodes.OK) {
+                    if (code == HttpCodes.FORBIDDEN) {
+                        onLogOut();
+                        return;
+                    }
                     rollbackOnRequestFail(backupField, ApiTaskType.UPDATE, atPosition);
                 }
             }
@@ -525,6 +535,10 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
                 int code = response.code();
 
                 if (code != HttpCodes.OK) {
+                    if (code == HttpCodes.FORBIDDEN) {
+                        onLogOut();
+                        return;
+                    }
                     rollbackOnRequestFail(field, ApiTaskType.DELETE, atPosition);
                 }
             }
@@ -539,11 +553,11 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
 
     private void synchronizeWithFacebookApi() {
 
-        FacebookAPI.getInstance().synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+        FacebookAPI.getInstance().synchronizeWithSocialApi(mContext, getActivity(), new ASocialAPI.ApiSyncCallBack() {
             @Override
             public void synchronizationResult(boolean status) {
                 if (status) {
-                    FacebookAPI.getInstance().getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                    FacebookAPI.getInstance().getProfileData(mContext, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
                         @Override
                         public void onProfileSynchronized(SynchronizableElement element) {
                             if (element == null) {
@@ -562,11 +576,11 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
 
     private void synchronizeWithTwitterApi() {
 
-        TwitterAPI.getInstance().synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+        TwitterAPI.getInstance().synchronizeWithSocialApi(mContext, getActivity(), new ASocialAPI.ApiSyncCallBack() {
             @Override
             public void synchronizationResult(boolean status) {
                 if (status) {
-                    TwitterAPI.getInstance().getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                    TwitterAPI.getInstance().getProfileData(mContext, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
                         @Override
                         public void onProfileSynchronized(SynchronizableElement element) {
                             if (element == null) {
@@ -578,7 +592,7 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
                     });
                 }
                 else {
-                    if (!TwitterAPI.getInstance().isApplicationInstalled(context)) {
+                    if (!TwitterAPI.getInstance().isApplicationInstalled(mContext)) {
                         showSocialFieldSyncRequireAppInstall(ProfileFieldType.TWITTER);
                     }
                     else {
@@ -591,11 +605,11 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
 
     private void synchronizeWithLinkedinApi() {
 
-        LinkedinAPI.getInstance().synchronizeWithSocialApi(context, getActivity(), new ASocialAPI.ApiSyncCallBack() {
+        LinkedinAPI.getInstance().synchronizeWithSocialApi(mContext, getActivity(), new ASocialAPI.ApiSyncCallBack() {
             @Override
             public void synchronizationResult(boolean status) {
                 if (status) {
-                    LinkedinAPI.getInstance().getProfileData(context, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
+                    LinkedinAPI.getInstance().getProfileData(mContext, getActivity(), new ASocialAPI.ApiProfileSyncCallBack() {
                         @Override
                         public void onProfileSynchronized(SynchronizableElement element) {
                             if (element == null) {
@@ -610,6 +624,14 @@ public class ProfileFragment extends Fragment implements SocketConnectionWatcher
                 }
             }
         });
+    }
+
+    private void onLogOut() {
+        Preferences.getInstance().deleteSavedCredentials(getContext());
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        getActivity().finishAffinity();
     }
 
     @Override
