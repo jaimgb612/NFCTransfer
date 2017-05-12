@@ -30,7 +30,7 @@
     <string name="err_no_nfc_detected">This device does not support NFC technology. Unfortunately, you won\'t be able to exchange your profile
         with someone else.</string>
     <string name="err_no_nfc_enabled">In order to exchange profiles using NFC, please activate this functionnality in the device\'s preferences.</string>
-    <string name="err_no_android_beam_enabled">In order to exchange profiles with another device, Yoki requires that you activate
+    <string name="err_no_android_beam_enabled">In order to exchange profiles with another device, NFCTransfer requires that you activate
         Android Beam in the device\'s preferences.</string>
     <string name="user_prompt_data">Please enter your</string>
     <string name="user_new_field">New field : </string>
@@ -45,7 +45,7 @@
     <string name="err_wrong_telephone_format">The telephone number format is invalid. A phone number should only contain decimal numbers, and its size must
          be between 9 and 15 characters long.</string>
     <string name="err_wrong_text_format">The text that you have entered contains special illegal characters, or its size is innapropriate.</string>
-    <string name="err_beam_corrupted_tag">The data that has been received is corrupted or does not allow to fetch data from a Yoki account. Please try again.</string>
+    <string name="err_beam_corrupted_tag">The data that has been received is corrupted or does not allow to fetch data from a NFCTransfer account. Please try again.</string>
     <string name="user_edit_cancel">Cancel</string>
     <string name="user_edit_confirm">Confirm</string>
     <string name="OK">OK</string>
@@ -59,7 +59,7 @@
     <string name="err_linkedin_sync_fail_msg">An error occured while synchronizing your LinkedIn Account. Please try again later.</string>
     <string name="err_facebook_sync_fail_msg">An error occured while synchronizing your Facebook Account. Please try again later.</string>
     <string name="err_twitter_sync_fail_msg">An error occured while synchronizing your Twitter Account. Please try again later.</string>
-    <string name="err_twitter_not_installed">In order to attach your Twitter profile to Yoki, please install the Twitter App on your device.</string>
+    <string name="err_twitter_not_installed">In order to attach your Twitter profile to NFCTransfer, please install the Twitter App on your device.</string>
     <string name="showcase_import_to_contacts">Import to device contacts</string>
     <string name="profile_showcase_banner_contact">Contact</string>
     <string name="profile_showcase_banner_social">Social networks</string>

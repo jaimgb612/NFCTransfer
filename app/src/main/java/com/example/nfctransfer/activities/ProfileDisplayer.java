@@ -1,11 +1,15 @@
 package com.example.nfctransfer.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +34,7 @@ public class ProfileDisplayer extends AppCompatActivity {
 
     public static final String EXTRA_KEY_PROFILE = "extra_key_profile";
     public final static String EXTRA_KEY_INSERT_IN_DATABASE = "extra_key_insert_database";
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     private ExpandableHeightListView mSocialFieldsListView;
     private ExpandableHeightListView mNonSocialFieldsListView;
@@ -56,24 +61,31 @@ public class ProfileDisplayer extends AppCompatActivity {
         mContactAdder = new ContactAdder(getApplicationContext());
     }
 
-    public void handleAddContactLayout() {
+    private void handleAddContactLayout() {
         RelativeLayout contactAddLayout = (RelativeLayout) findViewById(R.id.profile_showcase_contact_add_layout);
         contactAddLayout.setVisibility(View.VISIBLE);
         findViewById(R.id.profile_showcase_contact_add_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContactAdder.add(completeName, cellphoneNumber, emailAddr);
+                addProfileToContacts();
             }
         });
     }
 
-    public void setData() {
+    private void addProfileToContacts() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
+            mContactAdder.add(completeName, cellphoneNumber, emailAddr);
+        }
+    }
+
+    private void setData() {
         Intent intent = getIntent();
         boolean displayNonSocialPart = false;
         boolean displaySocialPart = false;
 
         Profile profile = (Profile) intent.getSerializableExtra(EXTRA_KEY_PROFILE);
-        //hasToDbCreate = intent.getBooleanExtra(YokiGlobals.Keys.INTENT_USERDATA_NEW, false);
 
         completeName = profile.getFirstname() + " " + profile.getLastname();
 
@@ -175,5 +187,15 @@ public class ProfileDisplayer extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //LISessionManager.getInstance(getApplicationContext()).onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                addProfileToContacts();
+            }
+        }
     }
 }

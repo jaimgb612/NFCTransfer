@@ -96,15 +96,4 @@ public class MatchedProfilesDB {
         c.close();
         return sharedUsersList;
     }
-
-    private DbUserModel cursorToYokiUser(Cursor c){
-        if (c.getCount() == 0) {
-            return null;
-        }
-        DbUserModel user = new DbUserModel();
-        user.setId(c.getInt(NUM_COL_ID));
-        user.setUserId(c.getString(NUM_COL_USER_ID));
-        user.setUserData(c.getString(NUM_COL_USER_DATA));
-        return user;
-    }
 }
